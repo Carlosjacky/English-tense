@@ -3,56 +3,427 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英文進階文法終極版 (含專業倒裝)</title>
+    <title>時態與被動語態特訓包 (Tense & Passive Voice Masterclass)</title>
     <style>
         :root {
-            --primary-color: #0f172a; --primary-light: #2563eb; --accent-color: #3b82f6;
-            --secondary-color: #f8fafc; --success-color: #16a34a; --danger-color: #dc2626;
-            --text-dark: #1e293b; --text-light: #64748b; --card-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+            --primary-dark: #0f172a; --primary-main: #2563eb; --primary-light: #eff6ff;
+            --success-color: #16a34a; --danger-color: #dc2626; --accent-color: #3b82f6;
+            --text-main: #334155; --text-muted: #64748b;
+            --bg-page: #f8fafc; --card-shadow: 0 10px 25px rgba(0,0,0,0.05);
             --transition-speed: 0.4s;
         }
-        /* ... 省略部分CSS以精簡篇幅，但在你的 index.html 中請保留完整版 ... */
-        /* 為保持檔案輕量且易於更新，完整程式碼如下： */
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg-page); color: var(--text-main); line-height: 1.6; padding: 20px; min-height: 100vh; }
+
+        header {
+            text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, #1e3a8a, #0f172a);
+            color: white; padding: 40px 20px; border-radius: 20px; box-shadow: var(--card-shadow);
+        }
+        header h1 { font-size: 24pt; margin-bottom: 10px; font-weight: 800; }
+        header p { font-size: 11pt; opacity: 0.9; }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px;
+            background: #e2e8f0; padding: 8px; border-radius: 50px; max-width: 650px; margin-left: auto; margin-right: auto;
+        }
+        .tab-btn {
+            flex: 1; min-width: 140px; padding: 12px 20px; border: none; background: transparent; font-size: 11pt; font-weight: 700;
+            color: var(--text-muted); cursor: pointer; border-radius: 40px; transition: 0.3s;
+        }
+        .tab-btn.active { background: white; color: var(--primary-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        .game-section { display: none; max-width: 850px; margin: 0 auto; animation: fadeIn 0.4s ease-out; }
+        .game-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tutorial Guide (Cheat Sheet) Styles */
+        .tutorial-box { background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: var(--card-shadow); }
+        .tutorial-box h3 { color: var(--primary-dark); margin-bottom: 20px; font-size: 16pt; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; }
+        .guide-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media(min-width: 768px) { .guide-grid { grid-template-columns: 1fr 1fr; } }
+        .guide-item { background: var(--bg-page); padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary-main); }
+        .guide-item h4 { color: var(--primary-dark); margin-bottom: 5px; font-size: 11.5pt; }
+        .guide-item .formula { font-family: monospace; color: #1d4ed8; background: #dbeafe; padding: 4px 8px; border-radius: 4px; font-size: 10.5pt; font-weight: bold; margin-bottom: 8px; display: inline-block; }
+        .guide-item p { font-size: 10pt; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
+        .guide-item .ex { font-style: italic; color: #0369a1; font-size: 10pt; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e0f2fe; }
+
+        /* Shared Card Styles */
+        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: var(--card-shadow); margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .stats-bar { display: flex; justify-content: space-between; border-bottom: 2px dashed #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; font-weight: bold; color: var(--text-muted); }
+        .progress-bar-container { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-color), var(--primary-main)); transition: width 0.4s; }
+
+        .question-box { background: var(--primary-light); padding: 25px; border-radius: 12px; border-left: 5px solid var(--primary-main); font-size: 15pt; font-weight: 600; margin-bottom: 25px; color: var(--primary-dark); }
+        .question-box mark { background: #fef08a; padding: 2px 6px; border-radius: 4px; color: #854d0e; }
+        .question-box.passive-q { background: #f1f5f9; border-left-color: #94a3b8; color: #475569; font-size: 13pt; border: 2px dashed #cbd5e1; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+        @media(min-width: 600px) { .options-grid.two-col { grid-template-columns: 1fr 1fr; } }
+
+        .btn-option { background: white; border: 2px solid #e2e8f0; padding: 16px 20px; border-radius: 10px; font-size: 11.5pt; font-weight: 600; text-align: left; cursor: pointer; transition: 0.2s; color: var(--text-main); }
+        .btn-option:hover:not(:disabled) { border-color: var(--primary-main); background: #f8fafc; transform: translateY(-2px); }
+        .btn-option:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-option.correct { background: #dcfce7 !important; border-color: var(--success-color) !important; color: #14532d !important; }
+        .btn-option.incorrect { background: #fee2e2 !important; border-color: var(--danger-color) !important; color: #7f1d1d !important; }
+
+        .explanation { display: none; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .explanation.show { display: block; animation: fadeIn 0.4s; }
+        .exp-title { font-weight: bold; margin-bottom: 10px; font-size: 12pt; }
+        .exp-text { font-size: 11pt; color: #475569; line-height: 1.5; }
+        .exp-translation { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; color: var(--primary-dark); font-weight: 600; font-size: 10.5pt; }
+
+        .next-btn { display: none; width: 100%; padding: 15px; background: var(--primary-main); color: white; border: none; border-radius: 10px; font-size: 12pt; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .next-btn:hover { background: #1d4ed8; }
+
+        .result-screen { text-align: center; }
+        .score-huge { font-size: 48pt; font-weight: 900; color: var(--primary-main); margin: 20px 0; }
+
+        /* Timeline Graphics (Tense) */
+        .timeline-container { margin: 15px 0; background: white; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .timeline-line { height: 4px; background-color: #cbd5e1; position: relative; margin: 0 15px 15px 15px; display: flex; justify-content: space-between; }
+        .timeline-node { width: 12px; height: 12px; background-color: #94a3b8; border-radius: 50%; position: relative; top: -4px; }
+        .timeline-node::after { content: attr(data-label); position: absolute; top: 16px; left: 50%; transform: translateX(-50%); font-size: 8pt; color: #64748b; font-weight: 700; white-space: nowrap; }
+        .timeline-node.now { background-color: #ef4444; width: 14px; height: 14px; top: -5px; }
+        .timeline-node.now::after { color: #ef4444; }
+        .timeline-action-span { position: absolute; height: 8px; top: -2px; border-radius: 4px; animation: progressFlow 2s linear infinite; }
+        .timeline-action-point { position: absolute; width: 16px; height: 16px; border: 3px solid white; border-radius: 50%; top: -6px; animation: pointPulse 1s infinite alternate; }
+
+        /* Scanner Graphics (Passive) */
+        .scanner-graphic { position: relative; overflow: hidden; padding: 15px; background: white; border: 1px solid #e2e8f0; border-radius: 10px; text-align: center; font-style: italic; color: #64748b; margin: 15px 0; }
+        .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--success-color); box-shadow: 0 0 10px var(--success-color); animation: scan 1.5s ease-in-out infinite alternate; display: none; }
+        .scanner-graphic.scanning .scanner-line { display: block; }
+        .scanner-graphic.scanning .scan-text { color: var(--success-color); font-weight: bold; font-style: normal; }
+
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        @keyframes progressFlow { from { background-position: 0 0; } to { background-position: 24px 0; } }
+        @keyframes pointPulse { from { transform: scale(1); } to { transform: scale(1.25); } }
+
+        /* Flashcards Specific */
+        .flashcard-wrapper { perspective: 1200px; width: 100%; height: 350px; margin: 0 auto 20px auto; cursor: pointer; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform var(--transition-speed); box-shadow: var(--card-shadow); border-radius: 20px; }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-side { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: white; border: 1px solid #e2e8f0; }
+        .card-front { border-top: 8px solid var(--accent-color); }
+        .card-back { background: var(--secondary-color); transform: rotateY(180deg); border-top: 8px solid var(--primary-main); }
+        .card-formula { font-family: 'Times New Roman', serif; font-style: italic; font-size: 15pt; background: #eff6ff; padding: 10px 20px; border-radius: 8px; color: #1d4ed8; font-weight: bold; margin: 10px 0; border: 1px dashed #bfdbfe; }
+        .fc-controls { display: flex; justify-content: space-between; align-items: center; }
+        .fc-btn { padding: 10px 20px; background: white; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .fc-btn:hover { background: #f1f5f9; }
     </style>
 </head>
 <body>
-    <!-- (這裡為確保你能完整複製，我提供一份合併後的關鍵結構) -->
-    <!-- 建議直接將此處的檔案內容複製到你電腦上的 index.html -->
+
     <header>
-        <h1>英文進階文法終極版 (Professional Edition)</h1>
-        <p>新增：【專業倒裝 (Inversion)】與【職場高級替代句型】</p>
+        <h1>時態與被動語態特訓包</h1>
+        <p>【核心翻卡】x【時態實戰】x【學術被動轉換】</p>
     </header>
 
-    <div class="tab-container">
-        <button class="tab-btn active" onclick="switchTab('tab-flash')">核心翻卡</button>
-        <button class="tab-btn" onclick="switchTab('tab-tense')">時態挑戰</button>
-        <button class="tab-btn" onclick="switchTab('tab-cond')">假設語氣</button>
-        <button class="tab-btn" onclick="switchTab('tab-inversion')">專業倒裝</button>
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchGame('tab-flash', this)">1. 時態核心翻卡</button>
+        <button class="tab-btn" onclick="switchGame('tab-tense', this)">2. 時態實戰挑戰</button>
+        <button class="tab-btn" onclick="switchGame('tab-pass', this)">3. 學術被動語態</button>
     </div>
 
-    <!-- 新增標籤內容範例 -->
-    <div id="tab-inversion" class="game-section">
-        <div class="card">
-            <div class="question-box">將此句改寫為專業倒裝句：<br>"If you should have any questions, please contact us."</div>
-            <div class="options-grid">
-                <button class="btn-option" onclick="checkInversion(1)">Should you have any questions, please contact us.</button>
-                <button class="btn-option" onclick="checkInversion(0)">If should you have any questions, please contact us.</button>
+    <div id="tab-flash" class="game-section active">
+        <div class="card" style="background:transparent; box-shadow:none; border:none; padding:0;">
+            <div class="flashcard-wrapper" onclick="toggleFlashcard()">
+                <div id="flashcard" class="flashcard">
+                    <div class="card-side card-front">
+                        <div style="font-size:10pt; color:var(--text-muted); font-weight:bold; letter-spacing:2px;">核心公式與結構</div>
+                        <div class="card-formula" id="fc-formula">Loading...</div>
+                        <div style="font-size:14pt; font-weight:bold; color:var(--primary-dark); margin:15px 0;" id="fc-desc"></div>
+                        <div style="color:#94a3b8; font-size:9pt; background:#f1f5f9; padding:6px 14px; border-radius:20px; margin-top:10px;">💡 點擊卡片翻轉查看時間軸與例句</div>
+                    </div>
+                    <div class="card-side card-back">
+                        <div style="font-size:16pt; font-weight:bold; color:var(--primary-main);" id="fc-name">時態名稱</div>
+                        <div class="timeline-container" style="width:100%; margin:15px 0; padding:15px 10px;">
+                            <div class="timeline-line" id="fc-timeline-box">
+                                <div class="timeline-node" data-label="過去"></div>
+                                <div class="timeline-node now" data-label="現在"></div>
+                                <div class="timeline-node" data-label="未來"></div>
+                            </div>
+                        </div>
+                        <div style="font-size:10.5pt; margin-bottom:10px;" id="fc-keywords"></div>
+                        <div style="font-size:10.5pt; font-style:italic; color:#0369a1; background:#f0f9ff; padding:10px; border-left:4px solid #0ea5e9; text-align:left; width:100%;" id="fc-example"></div>
+                    </div>
+                </div>
             </div>
-            <div id="inversion-exp" class="explanation">
-                <div class="exp-title">專業解析</div>
-                <div class="exp-text">在正式文件中省略 If 並將 Should 提前，不僅精簡，更能展現溝通的專業度[cite: 1]。</div>
+            <div class="fc-controls">
+                <button class="fc-btn" onclick="prevFC()">上一張</button>
+                <span style="font-weight:bold; color:var(--text-muted);" id="fc-progress">1 / 8</span>
+                <button class="fc-btn" style="background:var(--primary-main); color:white; border:none;" onclick="nextFC()">下一張</button>
             </div>
         </div>
     </div>
-    
+
+    <div id="tab-tense" class="game-section">
+        <div class="progress-bar-container"><div id="tense-prog-bar" class="progress-bar"></div></div>
+        <div class="card" id="tense-quiz-area">
+            <div class="stats-bar"><span id="tense-q-num">題目: 1/10</span><span id="tense-score">得分: 0</span></div>
+            <div class="question-box" id="tense-question">Loading...</div>
+            <div class="options-grid two-col" id="tense-options"></div>
+            <div class="explanation" id="tense-exp">
+                <div class="exp-title" id="tense-exp-title"></div>
+                <div class="timeline-container">
+                    <div class="timeline-line" id="tense-timeline-box">
+                        <div class="timeline-node" data-label="過去"></div>
+                        <div class="timeline-node now" data-label="現在"></div>
+                        <div class="timeline-node" data-label="未來"></div>
+                    </div>
+                </div>
+                <div class="exp-text" id="tense-exp-text"></div>
+                <div class="exp-translation" id="tense-exp-trans"></div>
+            </div>
+            <button class="next-btn" id="tense-next-btn" onclick="nextTense()">下一題</button>
+        </div>
+        <div class="card result-screen" id="tense-result" style="display:none;">
+            <h2>🎉 時態挑戰完成！</h2>
+            <div class="score-huge" id="tense-final-score">0 / 100</div>
+            <button class="next-btn" style="display:block; margin-top:20px;" onclick="initTense()">隨機重新挑戰</button>
+        </div>
+    </div>
+
+    <div id="tab-pass" class="game-section">
+        
+        <div class="tutorial-box">
+            <h3>📝 學術被動語態 (Passive Voice) 快速指南</h3>
+            <div class="guide-grid">
+                <div class="guide-item">
+                    <h4>1. 核心公式與目的</h4>
+                    <span class="formula">be 動詞 + P.P. (過去分詞)</span>
+                    <p>在工程與學術寫作中，用來<b>客觀陳述事實</b>，將焦點放在「動作的結果」而非「誰做的」。</p>
+                    <div class="ex">The models <b>were updated</b> yesterday.</div>
+                </div>
+                <div class="guide-item">
+                    <h4>2. 進行式的被動</h4>
+                    <span class="formula">be 動詞 + being + P.P.</span>
+                    <p>當主動句是進行式時，被動句必須加上 <b>being</b> 來維持「正在進行」的語感。</p>
+                    <div class="ex">The results <b>are being analyzed</b>. (結果正在被分析)</div>
+                </div>
+                <div class="guide-item">
+                    <h4>3. 完成式的被動</h4>
+                    <span class="formula">have/has/had + been + P.P.</span>
+                    <p>當主動句是完成式時，被動句必須加上 <b>been</b> 來維持「已經完成」的狀態。</p>
+                    <div class="ex">A vulnerability <b>has been discovered</b>. (漏洞已經被發現)</div>
+                </div>
+                <div class="guide-item">
+                    <h4>4. 主詞提升 (高級學術寫法)</h4>
+                    <span class="formula">S + is expected to + V...</span>
+                    <p>避免用 "People expect..."，改以事物為主詞，顯得更加專業且客觀。</p>
+                    <div class="ex">The new policy <b>is expected to</b> improve stability.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-bar-container"><div id="pass-prog-bar" class="progress-bar"></div></div>
+        <div class="card" id="pass-quiz-area">
+            <div class="stats-bar"><span id="pass-q-num">題目: 1/10</span><span id="pass-score">得分: 0</span></div>
+            <div style="font-size:10pt; color:var(--text-muted); font-weight:bold; text-transform:uppercase; margin-bottom:8px;">原句 / 主動語態</div>
+            <div class="question-box passive-q" id="pass-question">Loading...</div>
+            <div style="font-size:10.5pt; color:var(--primary-main); font-weight:bold; margin-bottom:12px;">請選擇最專業的學術被動語態轉換：</div>
+            <div class="options-grid" id="pass-options"></div>
+            <div class="explanation" id="pass-exp">
+                <div class="exp-title" id="pass-exp-title"></div>
+                <div class="scanner-graphic" id="pass-scanner">
+                    <div class="scanner-line"></div>
+                    <div class="scan-text" id="pass-scan-text">正在進行學術語氣升級掃描...</div>
+                </div>
+                <div class="exp-text" id="pass-exp-text"></div>
+            </div>
+            <button class="next-btn" id="pass-next-btn" onclick="nextPass()">下一題</button>
+        </div>
+        <div class="card result-screen" id="pass-result" style="display:none;">
+            <h2>📄 學術語態轉換完成！</h2>
+            <div class="score-huge" id="pass-final-score">0 / 100</div>
+            <button class="next-btn" style="display:block; margin-top:20px;" onclick="initPass()">再挑戰一次</button>
+        </div>
+    </div>
+
     <script>
-        function checkInversion(isCorrect) {
-            const exp = document.getElementById('inversion-exp');
-            exp.classList.add('show');
-            if(isCorrect) alert("正確！這是非常專業的寫法。");
-            else alert("錯誤。記得移除 If 並將 Should 移至句首。");
+        // ---------------------------------------------------------
+        // 1. DATA SOURCES
+        // ---------------------------------------------------------
+        const flashcardData = [
+            { id: "PRESENT_PERFECT", name: "現在完成式", formula: "have/has + P.P.", desc: "動作發生在過去但對現在造成影響或結果。", keywords: "already, yet, just, since, for", ex: "The team has already coordinated the models." },
+            { id: "PRESENT_PERFECT_CONT", name: "現在完成進行式", formula: "have/has been + V-ing", desc: "強調從過去開始一直不間斷持續到現在。", keywords: "for months, since morning, all week", ex: "He has been studying for the exam for three months." },
+            { id: "PAST_CONTINUOUS", name: "過去進行式", formula: "was/were + V-ing", desc: "表示在過去某個特定的時間點正在進行中的動作。", keywords: "when, while, at 9 PM yesterday", ex: "The tech was checking logs when the power went out." },
+            { id: "PAST_PERFECT", name: "過去完成式", formula: "had + P.P.", desc: "表示在過去某一個動作之前，就已經完成的動作（過去的過去）。", keywords: "before, after, by the time", ex: "They had finalized the design before the deadline passed." },
+            { id: "FUTURE_PERFECT", name: "未來完成式", formula: "will have + P.P.", desc: "表示在未來某一個特定時間點之前，將會完成的動作。", keywords: "by next month, by the time", ex: "By December, she will have received the decision." },
+            { id: "FUTURE_CONTINUOUS", name: "未來進行式", formula: "will be + V-ing", desc: "表示在未來某個特定的時間點預期正在進行中的動作。", keywords: "this time tomorrow, at 10 AM", ex: "We will be conducting reviews at this time tomorrow." },
+            { id: "PAST_PERFECT_CONT", name: "過去完成進行式", formula: "had been + V-ing", desc: "表示在過去某個時間點之前，一直不間斷持續進行的長動作。", keywords: "had been working for hours before...", ex: "They had been adjusting the system for hours before it worked." },
+            { id: "FUTURE_PERFECT_CONT", name: "未來完成進行式", formula: "will have been + V-ing", desc: "表示到未來某一個特定時間點為止，某動作累積不間斷進行了多久。", keywords: "by next year... for 5 hours", ex: "By next Monday, I will have been preparing for three months." }
+        ];
+
+        const tensesMap = {
+            PRESENT_PERFECT: "現在完成式", PRESENT_PERFECT_CONT: "現在完成進行式",
+            PAST_CONTINUOUS: "過去進行式", PAST_PERFECT: "過去完成式",
+            FUTURE_PERFECT: "未來完成式", FUTURE_CONTINUOUS: "未來進行式",
+            PAST_PERFECT_CONT: "過去完成進行式", FUTURE_PERFECT_CONT: "未來完成進行式"
+        };
+
+        /* ======================================================= */
+        /* ⚠️ 提醒：請將你 V4 檔案中完整的 const tenseBank = [...]  */
+        /* 整段覆蓋掉下方這個假資料陣列，即可恢復你的 150 題題庫！ ⚠️ */
+        /* ======================================================= */
+        const tenseBank = [
+            { t: "PRESENT_PERFECT", k: "already", q: "如果你看到這題，代表你還沒把 150 題貼過來喔！請 <mark>already</mark> 把它貼上覆蓋。", tr: "快去複製貼上吧！", d: "請參考上面的步驟教學進行覆蓋。" },
+            { t: "PAST_PERFECT", k: "before", q: "Please replace this array with your 150 questions <mark>before</mark> you start playing.", tr: "開始前請先替換陣列。", d: "為了保持輕量化，這裡只放了佔位符。" },
+            { t: "PAST_CONTINUOUS", k: "when", q: "I <mark>was editing</mark> the file when the system restarted.", tr: "當系統重啟時，我正在編輯檔案。", d: "過去進行式被過去簡單式打斷。" }
+        ];
+        /* ======================================================= */
+        /* ⚠️ 覆蓋範圍結束 ⚠️                                        */
+        /* ======================================================= */
+
+        const passBank = [
+            { q: "The engineering team has updated all the 3D structural models.", opts: ["All the 3D structural models were updated by the engineering team.", "All the 3D structural models have been updated by the engineering team.", "All the 3D structural models had been updated by the engineering team."], ans: 1, d: "主動句是「現在完成式」。被動時必須保持相同時態，加上 been：have/has been + P.P.。" },
+            { q: "The senior technician discovered a critical vulnerability in the server.", opts: ["A critical vulnerability is discovered in the server.", "A critical vulnerability has been discovered in the server.", "A critical vulnerability was discovered in the server."], ans: 2, d: "主動句是「過去簡單式」。被動語態需使用 was/were + P.P.。" },
+            { q: "The board of directors will review the annual project budget next week.", opts: ["The annual project budget will review by the board.", "The annual project budget will be reviewed by the board.", "The annual project budget would be reviewed by the board."], ans: 1, d: "主動句有助動詞 (will)，被動形式固定為 助動詞 + be + P.P.。" },
+            { q: "The laboratory staff are analyzing the experimental test results right now.", opts: ["The results are analyzed by the staff.", "The results are being analyzed by the staff.", "The results have been analyzed by the staff."], ans: 1, d: "主動句是「現在進行式」。被動語態必須加入 being 展現進行感：are being + P.P.。" },
+            { q: "An external auditor had modified the secure database before the crash.", opts: ["The database had been modified by an auditor.", "The database was modified by an auditor.", "The database has been modified by an auditor."], ans: 0, d: "主動句是「過去完成式」。被動語態需保持完成結構並加入 been：had been + P.P.。" },
+            { q: "The company requires all employees to attend the safety training.", opts: ["All employees are required to attend the safety training.", "All employees requires to be attended.", "All employees have required to attend."], ans: 0, d: "主動句是「現在簡單式」。學術公文中被動型態 are required to 顯得客觀正式。" },
+            { q: "They must submit the final financial report by 5 PM today.", opts: ["The report must have submitted by 5 PM.", "The report has to submit by 5 PM.", "The report must be submitted by 5 PM."], ans: 2, d: "含有情態助動詞 (must) 時，被動語態結構為 must + be + P.P.。" },
+            { q: "The researchers were developing a new software algorithm at that time.", opts: ["A new algorithm was developing by them.", "A new algorithm was being developed by them.", "A new algorithm had been developed by them."], ans: 1, d: "主動句是「過去進行式」。被動語態需要反映過去與進行的狀態：was/were + being + P.P.。" },
+            { q: "Nobody has signed the official authorization document yet.", opts: ["The document has not been signed yet.", "The document has been signed by nobody yet.", "The document had not been signed yet."], ans: 0, d: "主詞是 Nobody 時，轉換為被動語態通常會變成否定句，並省略 by nobody 以求簡潔專業。" },
+            { q: "People expect that the new policy will improve market stability.", opts: ["The new policy is expected to improve market stability.", "That the new policy will improve expects by people.", "The new policy expected to improve market stability."], ans: 0, d: "這是一種進階的「主詞提升」被動寫法 (S + is expected to...)，在學術與新聞報導中極度常見。" }
+        ];
+
+        // ---------------------------------------------------------
+        // 2. TIMELINE GRAPHIC ENGINE
+        // ---------------------------------------------------------
+        function drawTimeline(containerId, tenseKey) {
+            const box = document.getElementById(containerId);
+            const oldSpan = box.querySelector('.timeline-action-span');
+            const oldPoint = box.querySelector('.timeline-action-point');
+            if (oldSpan) oldSpan.remove(); if (oldPoint) oldPoint.remove();
+
+            let spanStyle = "", pointStyle = "";
+            if (tenseKey === "PRESENT_PERFECT") { spanStyle = "left:0%;width:50%;background:#3b82f6;"; pointStyle = "left:50%;background:#3b82f6;"; }
+            else if (tenseKey === "PRESENT_PERFECT_CONT") { spanStyle = "left:0%;width:50%;height:12px;top:-4px;background:repeating-linear-gradient(45deg,#16a34a,#16a34a 6px,#4ade80 6px,#4ade80 12px);"; pointStyle = "left:50%;background:#16a34a;width:18px;height:18px;top:-7px;"; }
+            else if (tenseKey === "PAST_CONTINUOUS") { spanStyle = "left:15%;width:25%;background:#3b82f6;"; pointStyle = "left:27%;background:#3b82f6;"; }
+            else if (tenseKey === "PAST_PERFECT") { spanStyle = "left:0%;width:25%;background:#3b82f6;"; pointStyle = "left:25%;background:#3b82f6;"; }
+            else if (tenseKey === "FUTURE_PERFECT") { spanStyle = "left:50%;width:35%;background:#3b82f6;"; pointStyle = "left:85%;background:#3b82f6;"; }
+            else if (tenseKey === "FUTURE_CONTINUOUS") { spanStyle = "left:60%;width:25%;background:#3b82f6;"; pointStyle = "left:72%;background:#3b82f6;"; }
+            else if (tenseKey === "PAST_PERFECT_CONT") { spanStyle = "left:0%;width:30%;height:10px;top:-3px;background:repeating-linear-gradient(45deg,#e11d48,#e11d48 6px,#fda4af 6px,#fda4af 12px);"; pointStyle = "left:30%;background:#e11d48;"; }
+            else if (tenseKey === "FUTURE_PERFECT_CONT") { spanStyle = "left:30%;width:55%;height:10px;top:-3px;background:repeating-linear-gradient(45deg,#7c3aed,#7c3aed 6px,#c084fc 6px,#c084fc 12px);"; pointStyle = "left:85%;background:#7c3aed;"; }
+
+            if(spanStyle) box.insertAdjacentHTML('beforeend', `<div class="timeline-action-span" style="${spanStyle}"></div>`);
+            if(pointStyle) box.insertAdjacentHTML('beforeend', `<div class="timeline-action-point" style="${pointStyle}"></div>`);
         }
-        // ... 其他邏輯與先前版本一致 ...
+
+        // ---------------------------------------------------------
+        // 3. GAME LOGIC
+        // ---------------------------------------------------------
+        let fcIdx = 0;
+        let tState = { q: [], i: 0, s: 0, a: false };
+        let pState = { q: [], i: 0, s: 0, a: false };
+
+        function switchGame(tabId, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
+            
+            if (btnElement) btnElement.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            
+            if(tabId === 'tab-flash') updateFC();
+            if(tabId === 'tab-tense' && tState.q.length === 0) initTense();
+            if(tabId === 'tab-pass' && pState.q.length === 0) initPass();
+        }
+
+        // --- Flashcards ---
+        function updateFC() {
+            const d = flashcardData[fcIdx]; document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(() => {
+                document.getElementById('fc-formula').innerText = d.formula; document.getElementById('fc-desc').innerText = d.desc;
+                document.getElementById('fc-name').innerText = d.name; document.getElementById('fc-keywords').innerHTML = `<b>常見提示字：</b>${d.keywords}`;
+                document.getElementById('fc-example').innerText = d.ex; document.getElementById('fc-progress').innerText = `${fcIdx + 1} / 8`;
+                drawTimeline('fc-timeline-box', d.id);
+            }, 150);
+        }
+        function toggleFlashcard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+        function nextFC() { fcIdx = (fcIdx + 1) % 8; updateFC(); }
+        function prevFC() { fcIdx = (fcIdx - 1 + 8) % 8; updateFC(); }
+
+        // --- Tense Quiz ---
+        function initTense() {
+            const roundQuestions = Math.min(10, tenseBank.length); 
+            tState.q = [...tenseBank].sort(()=>0.5-Math.random()).slice(0, roundQuestions); 
+            tState.i = 0; tState.s = 0;
+            document.getElementById('tense-result').style.display = 'none'; document.getElementById('tense-quiz-area').style.display = 'block';
+            showTense();
+        }
+        function showTense() {
+            tState.a = false; const q = tState.q[tState.i];
+            document.getElementById('tense-q-num').innerText = `題目: ${tState.i+1} / ${tState.q.length}`;
+            document.getElementById('tense-score').innerText = `得分: ${tState.s}`;
+            document.getElementById('tense-prog-bar').style.width = `${(tState.i/tState.q.length)*100}%`;
+            
+            let txt = q.q; if(q.k) txt = txt.replace(q.k, `<mark>${q.k}</mark>`);
+            document.getElementById('tense-question').innerHTML = txt;
+            document.getElementById('tense-options').innerHTML = '';
+            
+            Object.keys(tensesMap).forEach(k => {
+                let b = document.createElement('button'); b.className = 'btn-option'; b.innerText = tensesMap[k];
+                b.onclick = () => handleTense(b, k, q); document.getElementById('tense-options').appendChild(b);
+            });
+            document.getElementById('tense-exp').classList.remove('show'); document.getElementById('tense-next-btn').style.display = 'none';
+        }
+        function handleTense(btn, val, q) {
+            if(tState.a) return; tState.a = true; let btns = document.getElementById('tense-options').children;
+            for(let b of btns) { b.disabled = true; if(b.innerText === tensesMap[q.t]) b.classList.add('correct'); }
+            
+            if(val === q.t) { btn.classList.add('correct'); tState.s+=10; document.getElementById('tense-exp-title').innerHTML = `✅ 答對了！`; document.getElementById('tense-exp-title').style.color='var(--success-color)'; }
+            else { btn.classList.add('incorrect'); document.getElementById('tense-exp-title').innerHTML = `❌ 答錯了`; document.getElementById('tense-exp-title').style.color='var(--danger-color)'; }
+            
+            document.getElementById('tense-score').innerText = `得分: ${tState.s}`; drawTimeline('tense-timeline-box', q.t);
+            document.getElementById('tense-exp-text').innerHTML = `<b>【分析】</b>${q.d} <br>💡 <b>關鍵字：</b><span style="background-color: #fef08a; color: #854d0e; padding: 2px 8px; border-radius: 6px; font-weight: bold;">${q.k || '無'}</span>`;
+            document.getElementById('tense-exp-trans').innerText = q.tr ? `【翻譯】${q.tr}` : '';
+            document.getElementById('tense-exp').classList.add('show'); document.getElementById('tense-next-btn').style.display = 'block';
+        }
+        function nextTense() {
+            tState.i++; if(tState.i < tState.q.length) showTense();
+            else { document.getElementById('tense-quiz-area').style.display='none'; document.getElementById('tense-result').style.display='block'; document.getElementById('tense-final-score').innerText= `${tState.s} / ${tState.q.length * 10}`; document.getElementById('tense-prog-bar').style.width='100%'; }
+        }
+
+        // --- Passive Voice Quiz ---
+        function initPass() {
+            pState.q = [...passBank].sort(()=>0.5-Math.random()).slice(0, 10); pState.i = 0; pState.s = 0;
+            document.getElementById('pass-result').style.display = 'none'; document.getElementById('pass-quiz-area').style.display = 'block';
+            showPass();
+        }
+        function showPass() {
+            pState.a = false; const q = pState.q[pState.i];
+            document.getElementById('pass-q-num').innerText = `題目: ${pState.i+1} / 10`;
+            document.getElementById('pass-score').innerText = `得分: ${pState.s}`;
+            document.getElementById('pass-prog-bar').style.width = `${(pState.i/10)*100}%`;
+            
+            document.getElementById('pass-question').innerHTML = q.q;
+            document.getElementById('pass-options').innerHTML = '';
+            
+            q.opts.forEach((o, idx) => {
+                let b = document.createElement('button'); b.className = 'btn-option'; b.innerText = o;
+                b.onclick = () => handlePass(b, idx, q); document.getElementById('pass-options').appendChild(b);
+            });
+            document.getElementById('pass-exp').classList.remove('show'); document.getElementById('pass-scanner').classList.remove('scanning'); document.getElementById('pass-next-btn').style.display = 'none';
+        }
+        function handlePass(btn, idx, q) {
+            if(pState.a) return; pState.a = true; let btns = document.getElementById('pass-options').children; for(let b of btns) b.disabled = true;
+            const scan = document.getElementById('pass-scanner'), stxt = document.getElementById('pass-scan-text');
+            scan.classList.add('scanning'); stxt.innerText = "正在進行學術語氣升級掃描...";
+            
+            if(idx === q.ans) { btn.classList.add('correct'); pState.s+=10; document.getElementById('pass-exp-title').innerHTML = `✅ 語態轉換成功！`; document.getElementById('pass-exp-title').style.color='var(--success-color)'; setTimeout(()=>stxt.innerText="✨ 掃描完成：已達專業學術標準", 800); }
+            else { btn.classList.add('incorrect'); btns[q.ans].classList.add('correct'); document.getElementById('pass-exp-title').innerHTML = `❌ 轉換失敗`; document.getElementById('pass-exp-title').style.color='var(--danger-color)'; setTimeout(()=>{stxt.innerText="⚠️ 掃描中斷：文法邏輯不匹配"; stxt.style.color='var(--danger-color)';}, 800); }
+            
+            document.getElementById('pass-score').innerText = `得分: ${pState.s}`; document.getElementById('pass-exp-text').innerHTML = `<b>【解析】</b><br>${q.d}`;
+            document.getElementById('pass-exp').classList.add('show'); document.getElementById('pass-next-btn').style.display = 'block';
+        }
+        function nextPass() {
+            pState.i++; if(pState.i < pState.q.length) showPass();
+            else { document.getElementById('pass-quiz-area').style.display='none'; document.getElementById('pass-result').style.display='block'; document.getElementById('pass-final-score').innerText= `${pState.s} / ${pState.q.length * 10}`; document.getElementById('pass-prog-bar').style.width='100%'; }
+        }
+
+        window.onload = () => { updateFC(); };
     </script>
 </body>
 </html>
