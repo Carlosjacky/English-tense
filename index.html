@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英文進階時態互動記憶遊戲 v3 - 全能進階版</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --primary-light: #2563eb;
+            --accent-color: #3b82f6;
+            --secondary-color: #f8fafc;
+            --success-color: #16a34a;
+            --danger-color: #dc2626;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --card-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            --transition-speed: 0.55s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+            animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        header h1 {
+            font-size: 26pt;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 11.5pt;
+            opacity: 0.9;
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: #e2e8f0;
+            padding: 6px;
+            border-radius: 40px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            background: none;
+            font-size: 11pt;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 35px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn.active {
+            background-color: white;
+            color: var(--primary-light);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .game-section {
+            display: none;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .game-section.active {
+            display: block;
+            animation: fadeInPage 0.4s ease-out;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stage 1: Flashcard Enhanced */
+        .flashcard-wrapper {
+            perspective: 1400px;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: 20px auto 30px auto;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform var(--transition-speed) cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--card-shadow);
+            border-radius: 24px;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-front {
+            border-top: 10px solid var(--accent-color);
+        }
+
+        .card-back {
+            background-color: var(--secondary-color);
+            transform: rotateY(180deg);
+            border-top: 10px solid var(--primary-light);
+        }
+
+        .card-hint {
+            font-size: 10pt;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            font-weight: bold;
+        }
+
+        .card-main-text {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .card-formula {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 16pt;
+            background-color: #eff6ff;
+            padding: 12px 26px;
+            border-radius: 10px;
+            color: #1d4ed8;
+            font-weight: bold;
+            margin: 10px 0;
+            border: 1px dashed #bfdbfe;
+        }
+
+        .card-details {
+            font-size: 11pt;
+            color: var(--text-dark);
+            margin-top: 12px;
+        }
+
+        .card-example {
+            font-style: italic;
+            color: #0369a1;
+            margin-top: 20px;
+            font-size: 11pt;
+            border-left: 4px solid #0ea5e9;
+            padding: 10px 14px;
+            text-align: left;
+            background: #f0f9ff;
+            border-radius: 0 10px 10px 0;
+            width: 100%;
+        }
+
+        .control-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f1f5f9;
+        }
+
+        .progress-text {
+            font-size: 11.5pt;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        /* Stage 2: Quiz & Options */
+        .quiz-card {
+            background-color: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 18px;
+        }
+
+        .stats-box {
+            font-size: 11pt;
+            font-weight: 700;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 8px 18px;
+            border-radius: 25px;
+        }
+
+        .score-pulse {
+            animation: scorePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-color: #bbf7d0;
+            color: var(--success-color);
+        }
+
+        @keyframes scorePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-light));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sentence-display {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 24px;
+            background-color: var(--secondary-color);
+            border-radius: 16px;
+            border-left: 6px solid var(--primary-light);
+            margin-bottom: 30px;
+        }
+
+        .slide-in-animation {
+            animation: slideInRight 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(25px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .sentence-display mark {
+            background: #fef08a;
+            color: #854d0e;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            display: inline-block;
+            animation: highlightWave 0.8s ease-out forwards;
+        }
+
+        @keyframes highlightWave {
+            from { transform: scale(0.95); opacity: 0.5; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 650px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-btn {
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px;
+            font-size: 11pt;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #334155;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary-light);
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        .option-btn.correct {
+            background-color: #dcfce7 !important;
+            border-color: var(--success-color) !important;
+            color: #14532d !important;
+            animation: correctGlow 0.5s ease-out;
+        }
+
+        @keyframes correctGlow {
+            0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5); }
+            100% { box-shadow: 0 0 0 15px rgba(22, 163, 74, 0); }
+        }
+
+        .option-btn.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: var(--danger-color) !important;
+            color: #7f1d1d !important;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        /* Timeline Components */
+        .timeline-container {
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .timeline-title {
+            font-size: 10pt;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .timeline-line {
+            height: 4px;
+            background-color: #cbd5e1;
+            position: relative;
+            margin: 30px 15px 20px 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .timeline-node {
+            width: 12px;
+            height: 12px;
+            background-color: #94a3b8;
+            border-radius: 50%;
+            position: relative;
+            top: -4px;
+        }
+
+        .timeline-node::after {
+            content: attr(data-label);
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9pt;
+            color: #64748b;
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        .timeline-node.now {
+            background-color: #ef4444;
+            width: 14px;
+            height: 14px;
+            top: -5px;
+        }
+
+        .timeline-node.now::after {
+            color: #ef4444;
+            font-weight: 800;
+        }
+
+        .timeline-action-span {
+            position: absolute;
+            height: 8px;
+            top: -2px;
+            background: repeating-linear-gradient(45deg, #3b82f6, #3b82f6 6px, #60a5fa 6px, #60a5fa 12px);
+            border-radius: 4px;
+            animation: progressFlow 2s linear infinite;
+        }
+
+        .timeline-action-point {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: #2563eb;
+            border: 3.5px solid white;
+            border-radius: 50%;
+            top: -7px;
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.4);
+            animation: pointPulse 1s infinite alternate;
+        }
+
+        @keyframes progressFlow {
+            from { background-position: 0 0; }
+            to { background-position: 24px 0; }
+        }
+
+        @keyframes pointPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.25); }
+        }
+
+        .explanation-box {
+            display: none;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .explanation-box.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .explanation-title {
+            font-weight: 800;
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 12pt;
+        }
+
+        .explanation-text {
+            font-size: 11pt;
+            color: #1e3a8a;
+        }
+
+        .explanation-translation {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #bfdbfe;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+            background-color: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: var(--card-shadow);
+            max-width: 650px;
+            margin: 0 auto;
+            animation: celebrateEntrance 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes celebrateEntrance {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .result-score {
+            font-size: 52pt;
+            font-weight: 900;
+            color: var(--primary-light);
+            margin: 25px 0;
+            text-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 9.5pt;
+            font-weight: 700;
+            border-radius: 6px;
+            background-color: #cbd5e1;
+            color: #334155;
+            margin-right: 6px;
+        }
+        
+        .badge-keyword {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>英文進階時態互動記憶遊戲</h1>
+        <p>🚀 終極全能版 ・ 包含 8 大核心高階混淆時態與 160 句情境實戰題庫</p>
+    </header>
+
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="switchStage(1)">第一階段：核心結構翻卡</button>
+        <button class="tab-btn" onclick="switchStage(2)">第二階段：實戰句子挑戰</button>
+    </div>
+
+    <!-- STAGE 1 -->
+    <div id="stage1" class="game-section active">
+        <div class="flashcard-wrapper" onclick="toggleCardFlip()">
+            <div id="flashcard" class="flashcard">
+                <div class="card-side card-front">
+                    <div class="card-hint">核心公式與結構</div>
+                    <div class="card-formula" id="card-formula-display">have/has + past participle</div>
+                    <div class="card-main-text" id="card-desc-display">Loading...</div>
+                    <div style="color: #94a3b8; font-size: 9.5pt; margin-top:15px; background: #f8fafc; padding: 6px 14px; border-radius: 20px;">💡 點擊卡片立體翻轉</div>
+                </div>
+                <div class="card-side card-back">
+                    <div class="card-hint">正確時態名稱</div>
+                    <div class="card-main-text" id="card-tense-name" style="color: #2563eb; font-size: 20pt;">現在完成式</div>
+                    <div class="card-details" id="card-keywords-display">常見提示字</div>
+                    <div class="card-example" id="card-example-display">Example</div>
+                </div>
+            </div>
+        </div>
+        <div class="control-panel">
+            <button class="btn btn-secondary" onclick="prevCard()">上一張</button>
+            <span class="progress-text" id="card-progress">1 / 8</span>
+            <button class="btn btn-primary" onclick="nextCard()">下一張</button>
+        </div>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div id="stage2" class="game-section">
+        <div id="quiz-container">
+            <div class="progress-bar-container">
+                <div id="quiz-progress-bar" class="progress-bar"></div>
+            </div>
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <span class="stats-box" id="quiz-question-number">題目: 1 / 20</span>
+                    <span class="stats-box" id="quiz-score-display">得分: 0</span>
+                </div>
+                <div class="sentence-display" id="sentence-text">
+                    Loading sentence...
+                </div>
+                <div class="options-grid" id="options-container"></div>
+                
+                <div class="explanation-box" id="explanation-container">
+                    <div class="explanation-title" id="explanation-result">正確！</div>
+                    
+                    <div class="timeline-container">
+                        <div class="timeline-title">⏰ 時態動態視覺時間軸 (Visual Timeline)：</div>
+                        <div class="timeline-line" id="timeline-graphic-box">
+                            <div class="timeline-node" data-label="過去 (Past)"></div>
+                            <div class="timeline-node now" data-label="現在 (Now)"></div>
+                            <div class="timeline-node" data-label="未來 (Future)"></div>
+                        </div>
+                    </div>
+
+                    <div class="explanation-text" id="explanation-detail">解析說明。</div>
+                    <div class="explanation-translation" id="explanation-translation-text">中文翻譯。</div>
+                </div>
+                
+                <div class="quiz-actions">
+                    <button class="btn btn-primary" id="next-question-btn" onclick="nextQuestion()" style="display: none;">下一題</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="result-screen">
+            <h2 style="font-size: 24pt; color: #0f172a;">🎉 全能挑戰完成！</h2>
+            <div class="result-score" id="final-score">0</div>
+            <p class="result-comment" id="final-comment">評語</p>
+            <button class="btn btn-primary" onclick="restartQuiz()">再次隨機抽取20題挑戰</button>
+        </div>
+    </div>
+
+    <script>
+        const tenses = {
+            PRESENT_PERFECT: "現在完成式 (Present Perfect)",
+            PRESENT_PERFECT_CONT: "現在完成進行式 (Present Perfect Continuous)",
+            PAST_CONTINUOUS: "過去進行式 (Past Continuous)",
+            PAST_PERFECT: "過去完成式 (Past Perfect)",
+            FUTURE_PERFECT: "未來完成式 (Future Perfect)",
+            FUTURE_CONTINUOUS: "未來進行式 (Future Continuous)",
+            PAST_PERFECT_CONT: "過去完成進行式 (Past Perfect Continuous)",
+            FUTURE_PERFECT_CONT: "未來完成進行式 (Future Perfect Continuous)"
+        };
+
+        const flashcardData = [
+            {
+                formula: "have / has + P.P.",
+                desc: "動作發生在過去但對現在造成影響或結果；或表示從過去一直持續到現在的經驗或狀態。",
+                name: "現在完成式<br><span style='font-size:13pt; color:#64748b;'>Present Perfect</span>",
+                keywords: "already, yet, just, since, for, so far",
+                example: "I <b>have already coordinated</b> the structural 3D models. (我已經協調好結構3D模型。)"
+            },
+            {
+                formula: "have / has + been + V-ing",
+                desc: "強調一個從過去開始、一直不間斷持續到現在，且很可能還在繼續的動作，著重動作過程的延續性。",
+                name: "現在完成進行式<br><span style='font-size:13pt; color:#64748b;'>Present Perfect Continuous</span>",
+                keywords: "for three months, since morning, all week, lately",
+                example: "I <b>have been studying</b> for the PTE exam for three months. (我已經為PTE考試溫習了三個月。)"
+            },
+            {
+                formula: "was / were + V-ing",
+                desc: "表示在過去某個特定的時間點，正處於「正在進行中」的動作。經常用於描述背景事件或被短動作打斷。",
+                name: "過去進行式<br><span style='font-size:13pt; color:#64748b;'>Past Continuous</span>",
+                keywords: "when, while, at 9 PM yesterday",
+                example: "I <b>was checking</b> the clash report when the power went out. (當電力中斷時，我正在檢查碰撞報告。)"
+            },
+            {
+                formula: "had + P.P.",
+                desc: "表示在過去某一個過去動作或特定時間點「之前」，就已經完成的動作（過去的過去）。",
+                name: "過去完成式<br><span style='font-size:13pt; color:#64748b;'>Past Perfect</span>",
+                keywords: "before, after, by the time, already",
+                example: "I <b>had finalized</b> the 4D simulation before the deadline passed. (在截止日期過去之前，我已定稿了4D模擬。)"
+            },
+            {
+                formula: "will have + P.P.",
+                desc: "表示在未來某一個特定時間點或動作發生「之前」，將會完成的動作（著重於未來的截止完成點）。",
+                name: "未來完成式<br><span style='font-size:13pt; color:#64748b;'>Future Perfect</span>",
+                keywords: "by next month, by the time + 現在式動詞",
+                example: "By December, I <b>will have received</b> the decision from Melbourne. (到12月時，我將已經收到墨爾本大學的決定。)"
+            },
+            {
+                formula: "will be + V-ing",
+                desc: "表示在未來某個特定的時間點或期間，預期「正在進行中」的持續動作。",
+                name: "未來進行式<br><span style='font-size:13pt; color:#64748b;'>Future Continuous</span>",
+                keywords: "this time tomorrow, at 10 AM Saturday, throughout next week",
+                example: "I <b>will be coordinating</b> the new 3D structural models at this time tomorrow. (明天這個時候，我將會正在協調新的3D結構模型。)"
+            },
+            {
+                formula: "had + been + V-ing",
+                desc: "表示一個在過去某個動作之前一直「持續進行」的動作，強調該動作在過去某一點前的不間斷過程及時間長度。",
+                name: "過去完成進行式<br><span style='font-size:13pt; color:#64748b;'>Past Perfect Continuous</span>",
+                keywords: "had been working for hours before..., since morning before...",
+                example: "I <b>had been adjusting</b> the 4D simulation for hours before the client approved it. (在業主批准前，我已經連續調整了這4D模擬好幾個小時。)"
+            },
+            {
+                formula: "will have + been + V-ing",
+                desc: "表示到未來某一個特定時間點為止，某個動作已經「不間斷地持續進行」了多久（著重未來某時刻點的累計持續時間）。",
+                name: "未來完成進行式<br><span style='font-size:13pt; color:#64748b;'>Future Perfect Continuous</span>",
+                keywords: "by next year... will have been living, by the time... for five hours",
+                example: "By next Monday, I <b>will have been studying</b> for the PTE exam for three months. (到下週一，我為PTE英文考試不間斷複習就滿三個月了。)"
+            }
+        ];
+
+        const sentenceBank = [
+            // Present Perfect
+            { text: "I have already coordinated the structural 3D models with the building services team.", tense: tenses.PRESENT_PERFECT, keyword: "already", translation: "我已經與屋宇裝備團隊協調好結構3D模型。", detail: "have + coordinated 搭配 already，表示過去完成的動作對現在產生了協調完畢的結果。" },
+            { text: "My wife has just booked our flights for the upcoming vacation.", tense: tenses.PRESENT_PERFECT, keyword: "just", translation: "我老婆剛剛訂好了我們下次度假的機票。", detail: "has + booked 搭配 just，表示動作剛剛完成。" },
+            { text: "I have completed five full-length PTE practice tests so far.", tense: tenses.PRESENT_PERFECT, keyword: "so far", translation: "到目前為止，我已經完成了五份完整的PTE模擬考試。", detail: "so far 代表從過去累積到此時此刻的成果，是現在完成式的標誌字。" },
+            { text: "The contractor has not submitted the updated 4D construction simulation yet.", tense: tenses.PRESENT_PERFECT, keyword: "yet", translation: "承建商尚未提交更新的4D施工模擬。", detail: "yet 用於否定句，指直到目前為止該動作尚未發生。" },
+            { text: "We have already signed the contract for the new SUV.", tense: tenses.PRESENT_PERFECT, keyword: "already", translation: "我們已經簽署了新SUV的合約。", detail: "強調簽約動作已完成，目前正處於合約生效並等待提車的狀態。" },
+            
+            // Present Perfect Continuous
+            { text: "I have been coordinating the structural 3D models all morning.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "all morning", translation: "我整個上午都在協調結構3D模型。", detail: "all morning 說明動作從今早不間斷地延續至今，強調過程的長度和勞累感。" },
+            { text: "I have been studying for the PTE English exam for three months.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for three months", translation: "我已經為PTE英文考試溫習了三個月。", detail: "for three months 說明複習英文的動作連續保持了三個月且目前仍在進行。" },
+            { text: "My wife has been planning our itinerary for the Melbourne trip for days.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for days", translation: "我老婆幾天來一直在規劃我們墨爾本之行的行程。", detail: "表示規劃行程的動作持續了數天且此時仍在進行中。" },
+            { text: "I have been detailing the car wheels for two hours to remove all brake dust.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for two hours", translation: "我花了解兩個小時一直在清洗汽車輪圈以清除所有剎車塵。", detail: "強調連續洗刷兩小時的動態過程。" },
+            { text: "I have been preparing my application documents for the University of Melbourne postgraduate program.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "have been preparing", translation: "我一直在準備墨爾本大學碩士課程的申請文件。", detail: "強調準備資料這項繁瑣、系統性的工作是一直持續進行的。" },
+
+            // Past Continuous
+            { text: "I was checking the clash detection report when the power suddenly went out.", tense: tenses.PAST_CONTINUOUS, keyword: "when the power suddenly went out", translation: "當電力突然中斷時，我正在檢查碰撞檢測報告。", detail: "一個過去長動作 (was checking) 正在進行時，被另一個突發的過去短動作打斷。" },
+            { text: "My wife was packing the camera gear while I was charging the drone batteries.", tense: tenses.PAST_CONTINUOUS, keyword: "while", translation: "當我正在為航拍機電池充電時，我老婆正在打包相機裝備。", detail: "while 連接兩個在過去同時發生的不間斷、平行的長動作。" },
+            { text: "He was analyzing his golf ball spin rate at 9 PM yesterday.", tense: tenses.PAST_CONTINUOUS, keyword: "at 9 PM yesterday", translation: "昨天晚上9點時，他正在分析他的哥爾夫球自旋率。", detail: "在過去一個明確具體的時間點上，某個動作正處於運作的核心狀態。" },
+            { text: "My wife was editing a cinematic drone photo when the software froze.", tense: tenses.PAST_CONTINUOUS, keyword: "when the software froze", translation: "我老婆正在編輯一張電影感航拍照片時，軟件凍結了。", detail: "修圖是當時正在進行的長動作，遭遇了軟體凍結的干擾。" },
+            { text: "I was writing an email to the University of Melbourne admissions office at midnight last night.", tense: tenses.PAST_CONTINUOUS, keyword: "at midnight last night", translation: "昨晚午夜時，我正在寫一封給墨爾本大學招生辦公室的電郵。", detail: "昨夜午夜12點整，寫信的動作正處於進行狀態。" },
+
+            // Past Perfect
+            { text: "I had already completed the structural 3D models before the coordination meeting started.", tense: tenses.PAST_PERFECT, keyword: "before the coordination meeting started", translation: "在協調會議開始之前，我已經完成了結構3D模型。", detail: "會議開始是過去式 (started)，完成模型發生在會議開始「之前」，即過去的過去。" },
+            { text: "My wife had booked the photography permits before we arrived at the scenic spot.", tense: tenses.PAST_PERFECT, keyword: "before we arrived", translation: "在我們到達風景區之前，我老婆已經預訂好攝影許可證。", detail: "抵達景點是過去式，而辦妥許可證是更早之前就發生的事，所以用過去完成式。" },
+            { text: "The contractor had finalized the 4D simulation before the project deadline passed.", tense: tenses.PAST_PERFECT, keyword: "before the project deadline passed", translation: "在項目截止日期過去之前，承建商已經定稿了4D模擬。", detail: "截止日過去是過去式，定稿模擬是趕在截止前的「過去之過去」。" },
+            { text: "By the time the tournament began, he had practiced on the simulator for fifty hours.", tense: tenses.PAST_PERFECT, keyword: "By the time the tournament began", translation: "在錦標賽開始之前，他已經在模擬器上練習了五十個小時。", detail: "賽事開始 (began) 前，練習時數已經累計完成了50個小時。" },
+            { text: "I had verified my academic qualifications before I applied to the University of Melbourne.", tense: tenses.PAST_PERFECT, keyword: "before I applied", translation: "在向墨爾本大學提交申請之前，我已經驗證了我的學歷資格。", detail: "提交正式申請是過去式，學歷驗證是早先辦妥的文件手續。" },
+
+            // Future Perfect
+            { text: "By the end of this week, I will have finished updating the structural 3D models.", tense: tenses.FUTURE_PERFECT, keyword: "By the end of this week", translation: "到本週末，我將完成結構3D模型的更新。", detail: "By + 未來時間點 (本週末)，代表屆時這項模型任務將會完全結束。" },
+            { text: "By next month, my wife will have completed our comprehensive travel itinerary.", tense: tenses.FUTURE_PERFECT, keyword: "By next month", translation: "到下個月，我老婆將完成我們詳盡的旅遊行程規劃。", detail: "到下個月這個截止線前，行程表將會被完全做完。" },
+            { text: "By October, I will have taken the PTE English academic exam.", tense: tenses.FUTURE_PERFECT, keyword: "By October", translation: "到十月份，我將已經參加了PTE學術英文考試。", detail: "指在未來十月來臨的那個節點，上場考試這件事已經成為完結狀態。" },
+            { text: "I will have finished detailing my SUV by the time my wife gets home.", tense: tenses.FUTURE_PERFECT, keyword: "by the time my wife gets home", translation: "在我老婆回到家之前，我將會完成我那部SUV的汽車美容。", detail: "老婆到家時 (gets home)，我手頭的汽車美容工程早已提前完工收攤。" },
+            { text: "By December, I will have received the admission decision from the University of Melbourne.", tense: tenses.FUTURE_PERFECT, keyword: "By December", translation: "到十二月，我將已經收到墨爾本大學的錄取決定。", detail: "在十二月這個未來的終點點上，錄取結果的發放與接收動作早已完成。" },
+
+            // Future Continuous (New)
+            { text: "I will be coordinating the new 3D structural models at this time tomorrow.", tense: tenses.FUTURE_CONTINUOUS, keyword: "this time tomorrow", translation: "明天這個時候，我將會正在協調新的3D結構模型。", detail: "will be + V-ing 結構，表示在未來的特定時間點 (明天此時)，某動作預期「正處於進行狀態」。" },
+            { text: "My wife will be packing our photography gear while I am picking up the SUV.", tense: tenses.FUTURE_CONTINUOUS, keyword: "while", translation: "當我正在去提那輛SUV的時候，我老婆將會正在打包我們的攝影裝備。", detail: "表示在未來的某一時間段中，兩個動作將平行且持續地在進行中。" },
+            { text: "The BIM team will be conducting clash detection throughout the day next Tuesday.", tense: tenses.FUTURE_CONTINUOUS, keyword: "throughout the day next Tuesday", translation: "下週二整天，BIM團隊都將會正在進行碰撞檢測。", detail: "強調下週二一整天這個未來的時間跨度中，工作一直持續不斷進行的狀態。" },
+            { text: "I will be taking the PTE mock exam at 10 AM this Saturday.", tense: tenses.FUTURE_CONTINUOUS, keyword: "at 10 AM this Saturday", translation: "本週六早上10點，我將會正在參加PTE模擬考試。", detail: "指在未來週六10點整的那一瞬間，考試這個動作正處於核心進行中。" },
+            { text: "He will be tracking his ball spin rate during his training session tomorrow morning.", tense: tenses.FUTURE_CONTINUOUS, keyword: "tomorrow morning", translation: "明天早上訓練期間，他將會正在追踪他的哥爾夫球自旋率。", detail: "說明在明早的特定時段中，數據追踪動作將正在發生。" },
+
+            // Past Perfect Continuous (New)
+            { text: "I had been coordinating the structural 3D models for two hours before the server crashed.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the server crashed", translation: "在伺服器當機之前，我已經連續協調結構3D模型兩個小時了。", detail: "had been + coordinating 強調在過去某動作 (server crashed) 發生之前，前一個動作「一直不間斷地持續了多久」。" },
+            { text: "My wife had been setting up the drone for an hour before the rain started.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the rain started", translation: "在下雨之前，我老婆已經連續調試航拍機一個小時了。", detail: "下雨是過去式 (started)，調試航拍機是在下雨前持續開展的一段不間斷長過程。" },
+            { text: "The contractor had been adjusting the 4D simulation for hours before the client approved it.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the client approved it", translation: "在業主批准之前，承建商已經連續調整這4D施工模擬好幾個小時了。", detail: "業主批准是 past event，前面的調整工程是長達數小時且毫無間斷的動態勞動。" },
+            { text: "I had been training regularly at EFX24 gym for months before I noticed a significant change in my fitness.", tense: tenses.PAST_PERFECT_CONT, keyword: "for months before", translation: "在我注意到體能有顯著改變之前，我已經在EFX24健身房規律健身好幾個月了。", detail: "強調在過去某個發現的節點前，好幾個月以來不間斷保持的健身動態。" },
+            { text: "I had been preparing my academic portfolio for the University of Melbourne for months before submitting the application.", tense: tenses.PAST_PERFECT_CONT, keyword: "before submitting the application", translation: "在提交正式申請之前，我已經連續好幾個月在準備給墨爾本大學的學術作品集了。", detail: "強調提交前那段長達數月、不間斷付出心思的連續準備過程。" },
+
+            // Future Perfect Continuous (New)
+            { text: "By next month, I will have been coordinating structural 3D models at this company for exactly two years.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By next month", translation: "到下個月，我在這間公司不間斷地協調結構3D模型就滿兩年了。", detail: "will have been + V-ing 結構。By + 未來時間點搭配時間長度 (for two years)，用來結算「到了未來某時刻，該動作累計不間斷進行了多久」。" },
+            { text: "By midnight, my wife will have been editing these drone photography shots for five consecutive hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By midnight", translation: "到今晚午夜，我老婆連續編輯這些航拍照片就要滿五個小時了。", detail: "預測到今天午夜截止線時，修圖這項不間斷動作的累計總時長。" },
+            { text: "By the time the tournament begins, he will have been practicing on the golf simulator for six months straight.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By the time the tournament begins", translation: "到錦標賽開始時，他連續在哥爾夫球模擬器上練習就整整滿六個月了。", detail: "By the time 帶出未來時間點 (begins)，主句用來結算屆時已經連續練習了半年的跨度。" },
+            { text: "By the time my wife gets home, I will have been detailing this SUV for four hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time my wife gets home", translation: "當我老婆回到家時，我連續清洗保養這部SUV就要滿四個小時了。", detail: "計算在老婆到家 (未來點) 的那一刻，我持續不斷洗車保養的勞動時間長度。" },
+            { text: "By the time the semester starts, I will have been researching the Master of Digital Infrastructure Engineering program for a long time.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the semester starts", translation: "到學期開始時，我對這個數位基礎設施工程碩士課程的研究就已經持續很長一段時間了。", detail: "表示在未來學期開始那一刻，我對課程規劃持續投入研究的累計時長。" }
+        ];
+
+        // GAME STATE
+        let currentCardIndex = 0;
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let score = 0;
+        let hasAnswered = false;
+
+        function switchStage(stageNum) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.game-section').forEach(sec => sec.classList.remove('active'));
+            
+            document.querySelectorAll('.tab-btn')[stageNum - 1].classList.add('active');
+            document.getElementById(`stage${stageNum}`).classList.add('active');
+
+            if (stageNum === 2 && quizQuestions.length === 0) {
+                initQuiz();
+            }
+        }
+
+        // STAGE 1
+        function updateCard() {
+            const card = flashcardData[currentCardIndex];
+            const flashcardEl = document.getElementById('flashcard');
+            flashcardEl.classList.remove('flipped');
+            
+            setTimeout(() => {
+                document.getElementById('card-formula-display').innerHTML = card.formula;
+                document.getElementById('card-desc-display').innerText = card.desc;
+                document.getElementById('card-tense-name').innerHTML = card.name;
+                document.getElementById('card-keywords-display').innerHTML = `<b>常見提示字：</b>${card.keywords}`;
+                document.getElementById('card-example-display').innerHTML = card.example;
+                document.getElementById('card-progress').innerText = `${currentCardIndex + 1} / ${flashcardData.length}`;
+            }, 150);
+        }
+
+        function toggleCardFlip() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcardData.length;
+            updateCard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + flashcardData.length) % flashcardData.length;
+            updateCard();
+        }
+
+        // STAGE 2
+        function initQuiz() {
+            // Randomly sample 20 questions out of the comprehensive pool
+            const shuffled = [...sentenceBank].sort(() => 0.5 - Math.random());
+            quizQuestions = shuffled.slice(0, 20);
+            currentQuizIndex = 0;
+            score = 0;
+            
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('result-screen').style.display = 'none';
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            hasAnswered = false;
+            const q = quizQuestions[currentQuizIndex];
+            
+            document.getElementById('quiz-question-number').innerText = `題目: ${currentQuizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-score-display').innerText = `得分: ${score}`;
+            
+            const progressPercent = (currentQuizIndex / quizQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+            
+            const sentenceEl = document.getElementById('sentence-text');
+            sentenceEl.classList.remove('slide-in-animation');
+            void sentenceEl.offsetWidth; 
+            
+            let highlightedText = q.text;
+            if (q.keyword && highlightedText.includes(q.keyword)) {
+                highlightedText = highlightedText.replace(q.keyword, `<mark>${q.keyword}</mark>`);
+            }
+            sentenceEl.innerHTML = highlightedText;
+            sentenceEl.classList.add('slide-in-animation');
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            // Render options dynamically
+            Object.values(tenses).forEach(tenseValue => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = tenseValue;
+                btn.onclick = () => handleAnswer(btn, tenseValue);
+                optionsContainer.appendChild(btn);
+            });
+            
+            document.getElementById('explanation-container').classList.remove('show');
+            document.getElementById('next-question-btn').style.display = 'none';
+        }
+
+        function drawDynamicTimeline(tenseType) {
+            const box = document.getElementById('timeline-graphic-box');
+            const oldSpan = box.querySelector('.timeline-action-span');
+            const oldPoint = box.querySelector('.timeline-action-point');
+            if (oldSpan) oldSpan.remove();
+            if (oldPoint) oldPoint.remove();
+
+            if (tenseType === tenses.PRESENT_PERFECT) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 0%; width: 50%;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 50%;"></div>');
+            } else if (tenseType === tenses.PRESENT_PERFECT_CONT) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 0%; width: 50%; height:12px; top:-4px; background-color:#16a34a;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 50%; width:18px; height:18px;"></div>');
+            } else if (tenseType === tenses.PAST_CONTINUOUS) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 15%; width: 25%;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 27%;"></div>');
+            } else if (tenseType === tenses.PAST_PERFECT) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 0%; width: 25%;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 25%;"></div>');
+            } else if (tenseType === tenses.FUTURE_PERFECT) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 50%; width: 35%;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 85%;"></div>');
+            } else if (tenseType === tenses.FUTURE_CONTINUOUS) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 60%; width: 25%;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 72%;"></div>');
+            } else if (tenseType === tenses.PAST_PERFECT_CONT) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 0%; width: 30%; height:10px; top:-3px;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 30%;"></div>');
+            } else if (tenseType === tenses.FUTURE_PERFECT_CONT) {
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-span" style="left: 30%; width: 55%; height:10px; top:-3px;"></div>');
+                box.insertAdjacentHTML('beforeend', '<div class="timeline-action-point" style="left: 85%;"></div>');
+            }
+        }
+
+        function handleAnswer(selectedBtn, selectedValue) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+            
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = (selectedValue === q.tense);
+            const scoreDisplay = document.getElementById('quiz-score-display');
+            
+            if (isCorrect) {
+                score += 5;
+                selectedBtn.classList.add('correct');
+                document.getElementById('explanation-result').innerText = "🎉 答對了！非常完美！";
+                document.getElementById('explanation-result').style.color = "var(--success-color)";
+                
+                scoreDisplay.classList.add('score-pulse');
+                setTimeout(() => scoreDisplay.classList.remove('score-pulse'), 400);
+            } else {
+                selectedBtn.classList.add('incorrect');
+                document.getElementById('explanation-result').innerText = "❌ 答錯了，請觀察時間關係與關鍵字！";
+                document.getElementById('explanation-result').style.color = "var(--danger-color)";
+                
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    if (btn.innerText === q.tense) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+            
+            document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+            
+            drawDynamicTimeline(q.tense);
+            
+            document.getElementById('explanation-detail').innerHTML = `<b>【時態分析】</b>${q.detail}<br><br>💡 <b>關鍵字：</b><span class="badge badge-keyword">${q.keyword}</span>`;
+            document.getElementById('explanation-translation-text').innerHTML = `<b>【中文翻譯】</b>${q.translation}`;
+            
+            document.getElementById('explanation-container').classList.add('show');
+            document.getElementById('next-question-btn').style.display = 'block';
+            scoreDisplay.innerText = `得分: ${score}`;
+        }
+
+        function nextQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('quiz-progress-bar').style.width = '100%';
+            
+            const resultScreen = document.getElementById('result-screen');
+            resultScreen.style.display = 'block';
+            
+            document.getElementById('final-score').innerText = `${score} / 100`;
+            
+            let comment = "";
+            if (score === 100) {
+                comment = "太震撼了！你對這 8 個最容易混淆的高階英文時態已經達到了大師級的靈敏度！";
+            } else if (score >= 80) {
+                comment = "頂尖表現！高階時態的關鍵信號字與時間先後順序你已經基本摸透！";
+            } else if (score >= 60) {
+                comment = "順利及格！過去完成進行式與未來完成式仍需多加提防，多玩幾次時間軸就會形成直覺。";
+            } else {
+                comment = "仍需努力！高階時態需要結合動態時間軸一起聯想，返回第一階段翻看公式與例句再挑戰吧！";
+            }
+            document.getElementById('final-comment').innerText = comment;
+        }
+
+        function restartQuiz() {
+            initQuiz();
+        }
+
+        window.onload = () => {
+            updateCard();
+        };
+    </script>
+</body>
+</html>
