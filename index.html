@@ -23,7 +23,6 @@
         header h1 { font-size: 24pt; margin-bottom: 10px; font-weight: 800; }
         header p { font-size: 11pt; opacity: 0.9; }
 
-        /* Navigation */
         .nav-tabs {
             display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px;
             background: #e2e8f0; padding: 8px; border-radius: 50px; max-width: 650px; margin-left: auto; margin-right: auto;
@@ -38,7 +37,6 @@
         .game-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Tutorial Guide (Cheat Sheet) Styles */
         .tutorial-box { background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: var(--card-shadow); }
         .tutorial-box h3 { color: var(--primary-dark); margin-bottom: 20px; font-size: 16pt; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; }
         .guide-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
@@ -49,7 +47,6 @@
         .guide-item p { font-size: 10pt; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
         .guide-item .ex { font-style: italic; color: #0369a1; font-size: 10pt; background: white; padding: 8px; border-radius: 6px; border: 1px solid #e0f2fe; }
 
-        /* Shared Card Styles */
         .card { background: white; border-radius: 20px; padding: 30px; box-shadow: var(--card-shadow); margin-bottom: 25px; border: 1px solid #e2e8f0; }
         .stats-bar { display: flex; justify-content: space-between; border-bottom: 2px dashed #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; font-weight: bold; color: var(--text-muted); }
         .progress-bar-container { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
@@ -80,7 +77,7 @@
         .result-screen { text-align: center; }
         .score-huge { font-size: 48pt; font-weight: 900; color: var(--primary-main); margin: 20px 0; }
 
-        /* Timeline Graphics (Tense) */
+        /* Timeline Graphics */
         .timeline-container { margin: 15px 0; background: white; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .timeline-line { height: 4px; background-color: #cbd5e1; position: relative; margin: 0 15px 15px 15px; display: flex; justify-content: space-between; }
         .timeline-node { width: 12px; height: 12px; background-color: #94a3b8; border-radius: 50%; position: relative; top: -4px; }
@@ -90,7 +87,7 @@
         .timeline-action-span { position: absolute; height: 8px; top: -2px; border-radius: 4px; animation: progressFlow 2s linear infinite; }
         .timeline-action-point { position: absolute; width: 16px; height: 16px; border: 3px solid white; border-radius: 50%; top: -6px; animation: pointPulse 1s infinite alternate; }
 
-        /* Scanner Graphics (Passive) */
+        /* Scanner */
         .scanner-graphic { position: relative; overflow: hidden; padding: 15px; background: white; border: 1px solid #e2e8f0; border-radius: 10px; text-align: center; font-style: italic; color: #64748b; margin: 15px 0; }
         .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--success-color); box-shadow: 0 0 10px var(--success-color); animation: scan 1.5s ease-in-out infinite alternate; display: none; }
         .scanner-graphic.scanning .scanner-line { display: block; }
@@ -100,7 +97,7 @@
         @keyframes progressFlow { from { background-position: 0 0; } to { background-position: 24px 0; } }
         @keyframes pointPulse { from { transform: scale(1); } to { transform: scale(1.25); } }
 
-        /* Flashcards Specific */
+        /* Flashcards */
         .flashcard-wrapper { perspective: 1200px; width: 100%; height: 350px; margin: 0 auto 20px auto; cursor: pointer; }
         .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform var(--transition-speed); box-shadow: var(--card-shadow); border-radius: 20px; }
         .flashcard.flipped { transform: rotateY(180deg); }
@@ -126,6 +123,7 @@
         <button class="tab-btn" onclick="switchGame('tab-pass', this)">3. 學術被動語態</button>
     </div>
 
+    <!-- 模組 1: TENSE FLASHCARDS -->
     <div id="tab-flash" class="game-section active">
         <div class="card" style="background:transparent; box-shadow:none; border:none; padding:0;">
             <div class="flashcard-wrapper" onclick="toggleFlashcard()">
@@ -158,10 +156,11 @@
         </div>
     </div>
 
+    <!-- 模組 2: TENSE QUIZ -->
     <div id="tab-tense" class="game-section">
         <div class="progress-bar-container"><div id="tense-prog-bar" class="progress-bar"></div></div>
         <div class="card" id="tense-quiz-area">
-            <div class="stats-bar"><span id="tense-q-num">題目: 1/10</span><span id="tense-score">得分: 0</span></div>
+            <div class="stats-bar"><span id="tense-q-num">題目: 1/150</span><span id="tense-score">得分: 0</span></div>
             <div class="question-box" id="tense-question">Loading...</div>
             <div class="options-grid two-col" id="tense-options"></div>
             <div class="explanation" id="tense-exp">
@@ -185,8 +184,8 @@
         </div>
     </div>
 
+    <!-- 模組 3: PASSIVE VOICE QUIZ -->
     <div id="tab-pass" class="game-section">
-        
         <div class="tutorial-box">
             <h3>📝 學術被動語態 (Passive Voice) 快速指南</h3>
             <div class="guide-grid">
@@ -242,9 +241,6 @@
     </div>
 
     <script>
-        // ---------------------------------------------------------
-        // 1. DATA SOURCES
-        // ---------------------------------------------------------
         const flashcardData = [
             { id: "PRESENT_PERFECT", name: "現在完成式", formula: "have/has + P.P.", desc: "動作發生在過去但對現在造成影響或結果。", keywords: "already, yet, just, since, for", ex: "The team has already coordinated the models." },
             { id: "PRESENT_PERFECT_CONT", name: "現在完成進行式", formula: "have/has been + V-ing", desc: "強調從過去開始一直不間斷持續到現在。", keywords: "for months, since morning, all week", ex: "He has been studying for the exam for three months." },
@@ -262,19 +258,195 @@
             FUTURE_PERFECT: "未來完成式", FUTURE_CONTINUOUS: "未來進行式",
             PAST_PERFECT_CONT: "過去完成進行式", FUTURE_PERFECT_CONT: "未來完成進行式"
         };
+        
+        const tenses = {
+            PRESENT_PERFECT: "PRESENT_PERFECT",
+            PRESENT_PERFECT_CONT: "PRESENT_PERFECT_CONT",
+            PAST_CONTINUOUS: "PAST_CONTINUOUS",
+            PAST_PERFECT: "PAST_PERFECT",
+            FUTURE_PERFECT: "FUTURE_PERFECT",
+            FUTURE_CONTINUOUS: "FUTURE_CONTINUOUS",
+            PAST_PERFECT_CONT: "PAST_PERFECT_CONT",
+            FUTURE_PERFECT_CONT: "FUTURE_PERFECT_CONT"
+        };
 
-        /* ======================================================= */
-        /* ⚠️ 提醒：請將你 V4 檔案中完整的 const tenseBank = [...]  */
-        /* 整段覆蓋掉下方這個假資料陣列，即可恢復你的 150 題題庫！ ⚠️ */
-        /* ======================================================= */
-        const tenseBank = [
-            { t: "PRESENT_PERFECT", k: "already", q: "如果你看到這題，代表你還沒把 150 題貼過來喔！請 <mark>already</mark> 把它貼上覆蓋。", tr: "快去複製貼上吧！", d: "請參考上面的步驟教學進行覆蓋。" },
-            { t: "PAST_PERFECT", k: "before", q: "Please replace this array with your 150 questions <mark>before</mark> you start playing.", tr: "開始前請先替換陣列。", d: "為了保持輕量化，這裡只放了佔位符。" },
-            { t: "PAST_CONTINUOUS", k: "when", q: "I <mark>was editing</mark> the file when the system restarted.", tr: "當系統重啟時，我正在編輯檔案。", d: "過去進行式被過去簡單式打斷。" }
+        const sentenceBank = [
+            // Present Perfect
+            { text: "The engineering team has already coordinated the 3D structural models with the core design division.", tense: tenses.PRESENT_PERFECT, keyword: "already", translation: "工程團隊已經與核心設計部門協調好3D結構模型。", detail: "have + coordinated 搭配 already，表示過去完成的動作對現在產生了協調完畢的結果。" },
+            { text: "The travel agency has just booked the flights for our group vacation.", tense: tenses.PRESENT_PERFECT, keyword: "just", translation: "旅行社剛剛訂好了我們團體度假的機票。", detail: "has + booked 搭配 just，表示動作剛剛完成。" },
+            { text: "The manager has already reviewed the digital twin infrastructure for the landmark project.", tense: tenses.PRESENT_PERFECT, keyword: "already", translation: "經理已經審查了地標項目的數位雙生基礎設施。", detail: "已經審查完畢，強調事情做好了的現狀。" },
+            { text: "I have completed five full-length practice tests so far.", tense: tenses.PRESENT_PERFECT, keyword: "so far", translation: "到目前為止，我已經完成了五份完整的模擬考試。", detail: "so far 代表從過去累積到此時此刻的成果，是現在完成式的標誌字。" },
+            { text: "We have already signed the commercial lease contract for the new office.", tense: tenses.PRESENT_PERFECT, keyword: "already", translation: "我們已經簽署了新辦公室的商業租賃合約。", detail: "強調簽約動作已完成，目前正處於合約生效的狀態。" },
+            { text: "The runner has practiced his routine at the local sports center three times this week.", tense: tenses.PRESENT_PERFECT, keyword: "three times this week", translation: "這名跑手本週已經在本地體育中心練習了他的常規動作三次。", detail: "本週尚未結束，表達截止至目前累積的經驗次數。" },
+            { text: "The client has approved the final architectural design plan so far.", tense: tenses.PRESENT_PERFECT, keyword: "so far", translation: "到目前為止，客戶已經批准了最終的建築設計方案。", detail: "so far 指從過去到現在累積的審核進度。" },
+            { text: "They have lived in the central business district for more than ten years.", tense: tenses.PRESENT_PERFECT, keyword: "for more than ten years", translation: "他們在中央商務區已經住了十多年。", detail: "表示從過去到現在一直持續的狀態，且現在依然住在那裡。" },
+            { text: "The contractor has not submitted the updated construction simulation yet.", tense: tenses.PRESENT_PERFECT, keyword: "yet", translation: "承建商尚未提交更新的施工模擬。", detail: "yet 用於否定句，指直到目前為止該動作尚未發生。" },
+            { text: "I have thoroughly detailed the car exterior with a protective coating.", tense: tenses.PRESENT_PERFECT, keyword: "have thoroughly detailed", translation: "我已經用保護鍍膜徹底清潔並保養了汽車外觀。", detail: "強調保養工作已經完成，現在汽車正處於亮麗的狀態。" },
+            { text: "Have you ever visited the prestigious university campus overseas?", tense: tenses.PRESENT_PERFECT, keyword: "ever", translation: "你曾去過海外那所著名的大學校園嗎？", detail: "ever 用於問句中詢問從以前到現在為止的人生經驗。" },
+            { text: "The company has adopted advanced engineering software to improve coordination.", tense: tenses.PRESENT_PERFECT, keyword: "has adopted", translation: "公司已採用先進的工程軟件以改善協調。", detail: "著重於「現在公司正處於使用該技術」的現狀與影響。" },
+            { text: "The developers have successfully extracted all required data from the source database.", tense: tenses.PRESENT_PERFECT, keyword: "has successfully extracted", translation: "開發人員已成功自源資料庫中提取所有需要的數據。", detail: "表示數據提取得出的現有結果，供目前的系統使用。" },
+            { text: "She has achieved a significant improvement in her academic speaking score recently.", tense: tenses.PRESENT_PERFECT, keyword: "recently", translation: "她最近在學術口語成績上取得了顯著的進步。", detail: "recently (最近) 引導出最近發生的、且對現在有顯著影響的改變。" },
+            { text: "I have already renewed my membership at the fitness center.", tense: tenses.PRESENT_PERFECT, keyword: "already", translation: "我已經續期了健身中心的會籍。", detail: "already 強調在說話之前，會籍續期手續已經辦妥。" },
+            { text: "The client has changed the project specifications three times this month.", tense: tenses.PRESENT_PERFECT, keyword: "three times this month", translation: "客戶這個月已經更改了三次項目規範。", detail: "本月尚未結束，而更改規格已累積發生了三次。" },
+            { text: "The photographer has bought a new high-end mirrorless camera body.", tense: tenses.PRESENT_PERFECT, keyword: "have bought", translation: "攝影師買了一部新的高階無反光鏡相機機身。", detail: "買了相機，強調現在擁有了這台新裝備的結果。" },
+            { text: "He has checked the statistical data on the computer simulator.", tense: tenses.PRESENT_PERFECT, keyword: "has checked", translation: "他已經在電腦模擬器上檢查了統計數據。", detail: "數據已經確認，強調對當前結果已有掌握。" },
+            { text: "We have visited many beautiful scenic spots in the past few years.", tense: tenses.PRESENT_PERFECT, keyword: "in the past few years", translation: "在過去幾年中，我們去過許多美麗的風景景點。", detail: "涵蓋了延伸到現在的一段時間，指述這段期間累積的經歷。" },
+            { text: "I have researched the admission criteria for the Master of Engineering program.", tense: tenses.PRESENT_PERFECT, keyword: "have researched", translation: "我已經研究了工程碩士課程的入學標準。", detail: "研究工作已做完，目前心中已經清楚入學的要求。" },
+
+            // Present Perfect Continuous
+            { text: "The technical lead has been coordinating the 3D models all morning.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "all morning", translation: "技術主管整個上午都在協調3D模型。", detail: "all morning 指出動作從早上不間斷地延續至今，強調時間的長度和工作的延續感。" },
+            { text: "I have been studying for the international language proficiency exam for three months.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for three months", translation: "我已經為國際語言能力考試溫習了三個月。", detail: "for three months 說明複習英文的動作連續保持了三個月，至今依然在每日進行。" },
+            { text: "The marketing team has been planning our itinerary for the study trip for days.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for days", translation: "市場團隊幾天來一直在規劃我們考察之行的行程。", detail: "for days 表示動作持續了數天且此時仍在進行中，強調連續過程。" },
+            { text: "The engineering group has been developing the digital twin infrastructure since last year.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "since last year", translation: "自去年以來，工程小組一直在開發數位雙生基礎設施。", detail: "自去年至今的不間斷動態研發，強調項目的長期性與延續性。" },
+            { text: "It has been raining heavily in the business district since this afternoon.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "since this afternoon", translation: "自今天下午以來，商業區一直下著大雨。", detail: "描述天氣從下午一直下到說話這刻沒停過。" },
+            { text: "The developers have been adjusting the simulation configuration for hours.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for hours", translation: "開發人員幾個小時來一直在調整模擬配置。", detail: "for hours 體現了為調整配置所付出的連續勞動與時間長度。" },
+            { text: "I have been detailing the car wheels for two hours to remove all the dirt.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for two hours", translation: "我花了兩個小時一直在清洗汽車輪圈以清除所有污垢。", detail: "強調連續重複執行洗刷輪框動作兩小時的辛勞。" },
+            { text: "Have you been tracking your athletic statistics regularly recently?", tense: tenses.PRESENT_PERFECT_CONT, keyword: "recently", translation: "你最近一直在定期追蹤你的運動數據嗎？", detail: "詢問最近這段時間內，是否一直在不間斷、重複地執行追蹤數據的動作。" },
+            { text: "She has been working as a project coordinator in the city for five years.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for five years", translation: "她在這座城市擔任項目協調員已經有五年了。", detail: "五年來不間斷的職涯狀態延續至今，用進行完成式突出工作的延續感。" },
+            { text: "The analysts have been extracting source data to build the new database.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "have been extracting", translation: "分析師一直在提取源數據以建立新資料庫。", detail: "強調人員目前正處於密集、連續提取數據的工程階段中。" },
+            { text: "I have been going to the local fitness center regularly to improve my health.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "regularly", translation: "我最近一直定期去本地健身中心以改善健康。", detail: "表達近期內培養的一種持續、反覆發生的健康生活習慣。" },
+            { text: "Our staff has been looking for a professional post-processing software for image editing.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "has been looking for", translation: "我們的員工一直在尋找一款專業的圖像編輯後製軟件。", detail: "尋找的動作從過去一段時間開始，到現在為止依然在尋找中。" },
+            { text: "They have been discussing the digital infrastructure project since the meeting started.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "since the meeting started", translation: "自會議開始以來，他們一直在討論數位基礎設施項目。", detail: "會議開始是起點，討論一直激烈延續至當下。" },
+            { text: "I have been using this brand of nutrition supplements for a year.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "for a year", translation: "我用這個品牌的營養補充品已經一年了。", detail: "表達整整一年來持續不斷保持的飲食或生活習慣。" },
+            { text: "The client has been asking for the clash detection report all week.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "all week", translation: "客戶整個星期一直在索取碰撞檢測報告。", detail: "all week 強調客戶整個禮拜不間斷催促的過程與壓力。" },
+            { text: "I have been researching premium mirrorless camera specifications lately.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "lately", translation: "我最近一直在研究高階無反光鏡相機的規格資料。", detail: "lately 搭配完成進行式，代表近段時間內主要的、連續的興趣與心思所在。" },
+            { text: "He has been watching professional sports tournaments online all weekend.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "all weekend", translation: "他整個週末都在網上觀看專業體育錦標賽。", detail: "整個週末都在重複或持續進行看影片的休閒動作。" },
+            { text: "We have been considering purchasing a larger SUV for logistics and family use.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "have been considering", translation: "我們一直都在考慮購買一輛更大的SUV用於物流和家庭用途。", detail: "這個「考慮」的心路歷程持續了一段時間，而且目前仍在進行中。" },
+            { text: "I have been preparing my application documents for the postgraduate program.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "have been preparing", translation: "我一直在準備碩士課程的申請文件。", detail: "強調準備資料這項系統性的工作是一直持續在進行的。" },
+            { text: "The team has been auditing the source code since Monday morning.", tense: tenses.PRESENT_PERFECT_CONT, keyword: "since Monday morning", translation: "團隊自週一早上以來一直在審計原始碼。", detail: "週一早晨是起點，審計動作不間斷地延續到說話的當下。" },
+
+            // Past Continuous
+            { text: "I was checking the clash detection report when the power suddenly went out.", tense: tenses.PAST_CONTINUOUS, keyword: "when the power suddenly went out", translation: "當電力突然中斷時，我正在檢查碰撞檢測報告。", detail: "一個過去長動作 (was checking) 正在進行時，被一個突發的短動作割斷。" },
+            { text: "The assistant was packing the camera gear while the technician was charging the batteries.", tense: tenses.PAST_CONTINUOUS, keyword: "while", translation: "當技術人員正在為電池充電時，助理正在打包相機裝備。", detail: "while 連接兩個在過去同時發生的不間斷、平行的長動作。" },
+            { text: "He was analyzing the ball spin rate at 9 PM yesterday.", tense: tenses.PAST_CONTINUOUS, keyword: "at 9 PM yesterday", translation: "昨天晚上9點時，他正在分析球的自旋率。", detail: "在過去一個明確具體的時間點上，某個動作正處於運作的核心狀態。" },
+            { text: "The project team was modifying the 3D models during the coordination meeting.", tense: tenses.PAST_CONTINUOUS, keyword: "during the coordination meeting", translation: "項目團隊在協調會議期間正在修改3D模型。", detail: "在整個會議這段過去的時間跨度中，修改模型的動作正在持續進行。" },
+            { text: "I was reviewing the academic vocabulary list when you called me.", tense: tenses.PAST_CONTINUOUS, keyword: "when you called me", translation: "你打電話給我時，我正在複習學術詞彙表。", detail: "複習單字是當時正在發生的背景動作，隨後被「你打來」這個單一過去事件打斷。" },
+            { text: "It was raining when I arrived at the fitness center this morning.", tense: tenses.PAST_CONTINUOUS, keyword: "when I arrived", translation: "今天早上我到達健身中心時，正下著雨。", detail: "我到達那裏的一瞬間，下雨這個自然現象正在持續進行中。" },
+            { text: "The engineer was presenting the construction simulation when the director raised an objection.", tense: tenses.PAST_CONTINUOUS, keyword: "when the director raised an objection", translation: "當主管提出反對時，工程師正在展示施工模擬。", detail: "主管提出反對 (短動作) 切入了工程師正在做簡報 (長動作) 的進程。" },
+            { text: "I was applying the cleaning spray to the car wheels when it started to drizzle.", tense: tenses.PAST_CONTINUOUS, keyword: "when it started to drizzle", translation: "我正在給汽車輪圈噴清潔劑時，天空開始下起毛毛雨。", detail: "塗抹噴劑是過去正在發生的動作，剛好碰上了毛毛雨落下的那一刻。" },
+            { text: "What were you doing when the tournament announcement was officially made?", tense: tenses.PAST_CONTINUOUS, keyword: "when the tournament announcement was officially made", translation: "錦標賽公告正式發布時，你正在做什麼？", detail: "詢問在過去那一個公告發布的瞬間點，對方正處於什麼樣的活動中。" },
+            { text: "She was attending a technical webinar on digital ecosystems at 3 PM yesterday.", tense: tenses.PAST_CONTINUOUS, keyword: "at 3 PM yesterday", translation: "昨天下午3點時，她正在參加一場關於數位生態系統的技術網絡研討會。", detail: "昨日下午三點整，線上參加研討會的動作正在發生。" },
+            { text: "While the specialist was extracting data, the server crashed unexpectedly.", tense: tenses.PAST_CONTINUOUS, keyword: "While the specialist was extracting", translation: "當專家正在提取數據時，伺服器出乎意料地當機了。", detail: "伺服器當機發生在提取數據的進行過程之中。" },
+            { text: "I was mixing my supplement shake when my colleague entered the office pantry.", tense: tenses.PAST_CONTINUOUS, keyword: "when my colleague entered", translation: "當我的同事走進辦公室茶水間時，我正在沖調我的營養補充粉。", detail: "同事進來的一刻，攪拌杯子的動作正處於進行中。" },
+            { text: "The graphic designer was editing an image when the computer froze.", tense: tenses.PAST_CONTINUOUS, keyword: "when the computer froze", translation: "平面設計師正在編輯一張圖片時，電腦凍結了。", detail: "修圖是當時正在進行的長動作，遭遇了電腦凍結的干擾。" },
+            { text: "They were debating the infrastructure master plan during the entire afternoon yesterday.", tense: tenses.PAST_CONTINUOUS, keyword: "during the entire afternoon", translation: "昨天整個下午他們都在辯論基礎設施的主體規劃。", detail: "指出在整個過去時段中，辯論這件事一直處於進行的狀態。" },
+            { text: "I was working out at the local gym when I met an old friend from college.", tense: tenses.PAST_CONTINUOUS, keyword: "when I met", translation: "我在本地健身房健身時，遇到了一位大學時的老朋友。", detail: "巧遇老友是偶然發生的單點事件，發生在正埋頭健身的背景過程中。" },
+            { text: "The client was reviewing the 3D asset when they noticed an alignment issue.", tense: tenses.PAST_CONTINUOUS, keyword: "when they noticed", translation: "客戶在審查3D資產時，注意到一個對齊問題。", detail: "看模型的動作正在發生，在中途看出了問題。" },
+            { text: "I was reading about the high-end camera specifications when the retail store closed.", tense: tenses.PAST_CONTINUOUS, keyword: "when the retail store closed", translation: "當零售店關門時，我正在閱讀關於高階相機的規格資料。", detail: "關店門這一過去動作，終結了我正在閱讀資料的過程。" },
+            { text: "He was practicing his short game on the sports field while the sun was setting.", tense: tenses.PAST_CONTINUOUS, keyword: "while the sun was setting", translation: "夕陽西下時，他正在運動場上練習短桿。", detail: "練習與夕陽西下是過去同時在開展、推移的兩個平行長狀態。" },
+            { text: "We were driving the vehicle around the city when we found a perfect spot for landscape photography.", tense: tenses.PAST_CONTINUOUS, keyword: "when we found", translation: "我們開著車在城市周圍兜風時，發現了一個絕佳的風景攝影地點。", detail: "開車兜風是當時延續的狀態，途中猛然發現了拍照好去處。" },
+            { text: "I was writing a cover letter to the admissions office at midnight last night.", tense: tenses.PAST_CONTINUOUS, keyword: "at midnight last night", translation: "昨晚午夜時，我正在寫一封給招生辦公室的自薦信。", detail: "昨夜午夜12點整，寫信的鍵盤敲擊動作正在進行中。" },
+
+            // Past Perfect
+            { text: "I had already completed the structural 3D models before the coordination meeting started.", tense: tenses.PAST_PERFECT, keyword: "before the coordination meeting started", translation: "在協調會議開始之前，我已經完成了結構3D模型。", detail: "會議開始是過去式 (started)，完成模型發生在會議開始「之前」，即過去的過去，用 had + completed。" },
+            { text: "Our staff had booked the official photography permits before we arrived at the scenic spot.", tense: tenses.PAST_PERFECT, keyword: "before we arrived", translation: "在我們到達風景區之前，我們的員工已經預訂好了官方攝影許可證。", detail: "抵達景點是過去式，而辦妥許可證是更早之前就發生的事，所以用過去完成式。" },
+            { text: "He had already checked the distance statistics before changing his sports equipment.", tense: tenses.PAST_PERFECT, keyword: "before changing his sports equipment", translation: "在更換運動裝備之前，他已經檢查過距離數據了。", detail: "更換裝備是過去的動作，檢查數據則是換裝備前的先行步驟。" },
+            { text: "The team coordinator had resolved the clashes before the director reviewed the model.", tense: tenses.PAST_PERFECT, keyword: "before the director reviewed", translation: "在主管審查模型之前，團隊協調員已經解決了碰撞問題。", detail: "解決碰撞問題發生在主管審查的更早之前，體現了前置作業完成。" },
+            { text: "I had finished three chapters of the prep book by the time my roommate woke up.", tense: tenses.PAST_PERFECT, keyword: "by the time my roommate woke up", translation: "在我的室友醒來之前，我已經讀完了三章準備書。", detail: "by the time 引導過去時點 (woke up)，主句必須用過去完成式表示在此前已完結的事情。" },
+            { text: "The retail shop had sold out of that specific supplement before I arrived.", tense: tenses.PAST_PERFECT, keyword: "before I arrived", translation: "在我到達之前，零售店就已經賣光了那款特定的補充品。", detail: "我的到達是過去式 (arrived)，而賣光是更早發生的事情。" },
+            { text: "The contractor had finalized the construction simulation before the project deadline passed.", tense: tenses.PAST_PERFECT, keyword: "before the project deadline passed", translation: "在項目截止日期過去之前，承建商已經定稿了施工模擬。", detail: "截止日過去是過去式，定稿模擬是趕在截止前的「過去之過去」。" },
+            { text: "I had thoroughly cleaned the car body before I applied the glass treatment.", tense: tenses.PAST_PERFECT, keyword: "before I applied", translation: "在塗抹玻璃保護劑之前，我已經徹底清洗過車身了。", detail: "塗抹保護劑是 past event，清洗則是塗抹前的必經基礎工作。" },
+            { text: "By the time the final tournament began, he had practiced on the simulator for fifty hours.", tense: tenses.PAST_PERFECT, keyword: "By the time the final tournament began", translation: "在決賽開始之前，他已經在模擬器上練習了五十個小時。", detail: "賽事開始 (began) 前，練習時數已經累計完成了50個小時。" },
+            { text: "She had obtained her professional certification before applying for the new position.", tense: tenses.PAST_PERFECT, keyword: "before applying for the new position", translation: "在申請新職位之前，她已經獲得了專業認證。", detail: "獲得認證是更早發生的資歷累積，為後來的申請做鋪墊。" },
+            { text: "The team had extracted all required engineering data before the database migration began.", tense: tenses.PAST_PERFECT, keyword: "before the database migration began", translation: "在資料庫遷移開始之前，團隊已經提取了所有需要的工程數據。", detail: "遷移開始是過去起點，數據提取在此前已穩妥完工。" },
+            { text: "I had already joined the local fitness center before they increased the monthly fee.", tense: tenses.PAST_PERFECT, keyword: "before they increased", translation: "在他們提高月費之前，我已經加入了本地健身中心。", detail: "他們漲價是 past tense，我入會是趕在漲價前的更早過去。" },
+            { text: "The photographer had selected the best camera lens before we went out for the shoot.", tense: tenses.PAST_PERFECT, keyword: "before we went out", translation: "在我們出去拍攝之前，攝影師已經選好了最好的相機鏡頭。", detail: "出發是過去式，挑選鏡頭是在那之前完成的前置動作。" },
+            { text: "The administration had approved the digital project budget before the new quarter started.", tense: tenses.PAST_PERFECT, keyword: "before the new quarter started", translation: "在新季度開始之前，行政部門已經批准了數位項目預算。", detail: "新季度開始是過去式，預算案批發是更早通過的決議。" },
+            { text: "I had already finished my nutrition shake when the training session officially started.", tense: tenses.PAST_PERFECT, keyword: "when the training session officially started", translation: "當訓練課程正式開始時，我已經喝完了我的營養搖搖杯。", detail: "課程開始時，搖搖杯裡已經空空如也，動作更早結束。" },
+            { text: "The manager had requested several modifications before they finally signed off on the model.", tense: tenses.PAST_PERFECT, keyword: "before they finally signed off", translation: "在最終簽准模型之前，經理已經提出了幾次修改要求。", detail: "最後簽字是過去式，而提出修改要求是簽字前發生的。" },
+            { text: "I had researched the high-end camera features extensively before I decided to purchase it.", tense: tenses.PAST_PERFECT, keyword: "before I decided to purchase it", translation: "在我決定購買之前，我已經廣泛研究了這款高階相機的功能。", detail: "下決心購買是 past action，研究規格是決定前的行為。" },
+            { text: "He had won several amateur sports trophies before he turned thirty years old.", tense: tenses.PAST_PERFECT, keyword: "before he turned thirty", translation: "在他三十歲之前，他已經贏得了幾個業餘體育獎盃。", detail: "滿三十歲是 past condition，拿獎盃是三十歲前的榮譽。" },
+            { text: "We had already inspected the vehicle interior features before we signed the lease.", tense: tenses.PAST_PERFECT, keyword: "before we signed the lease", translation: "在我們簽署租賃合約之前，我們已經仔細檢查過汽車的內飾功能了。", detail: "簽署合約前，驗車與看內裝的動作就已經全數做完。" },
+            { text: "I had verified my academic qualifications before I applied to the postgraduate program.", tense: tenses.PAST_PERFECT, keyword: "before I applied", translation: "在向碩士課程提交申請之前，我已經驗證了我的學歷資格。", detail: "提交正式申請是過去式，學歷驗證是早先辦妥的文件手續。" },
+
+            // Future Perfect
+            { text: "By the end of this week, I will have finished updating the structural 3D models.", tense: tenses.FUTURE_PERFECT, keyword: "By the end of this week", translation: "到本週末，我將完成結構3D模型的更新。", detail: "By + 未來時間點 (本週末)，代表屆時這項模型任務將會完全結束。" },
+            { text: "By next month, the administrative team will have completed our comprehensive travel itinerary.", tense: tenses.FUTURE_PERFECT, keyword: "By next month", translation: "到下個月，行政團隊將完成我們詳盡的旅遊行程規劃。", detail: "到下個月這個截止線前，行程表將會被完全做完。" },
+            { text: "By October, I will have taken the international English academic exam.", tense: tenses.FUTURE_PERFECT, keyword: "By October", translation: "到十月份，我將已經參加了國際英文學術考試。", detail: "指在未來十月來臨的那個節點，上場考試這件事已經成為完結狀態。" },
+            { text: "I will have finished detailing the vehicle by the time my supervisor gets home.", tense: tenses.FUTURE_PERFECT, keyword: "by the time my supervisor gets home", translation: "在我的主管回到家之前，我將會完成汽車的美容與清潔。", detail: "主管到家時，我手頭的汽車美容工程早已提前完工收攤。" },
+            { text: "By December, I will have received the formal admission decision from the university.", tense: tenses.FUTURE_PERFECT, keyword: "By December", translation: "到十二月，我將已經收到大學的正式錄取決定。", detail: "在十二月這個未來的終點點上，錄取結果的接收動作早已完成。" },
+            { text: "By the time the final tournament starts, he will have perfected his swing technique.", tense: tenses.FUTURE_PERFECT, keyword: "By the time the tournament starts", translation: "到錦標賽開始時，他將已經讓自己的揮桿技術變得完美。", detail: "By the time 搭配現在式動詞表未來時間，主句用未來完成式，指那時技術已修煉完畢。" },
+            { text: "The engineering team will have delivered the final digital twin infrastructure by next quarter.", tense: tenses.FUTURE_PERFECT, keyword: "by next quarter", translation: "到下一季度，工程團隊將交付最終的數位雙生基礎設施。", detail: "下一季度是交貨截止期，屆時模型交付動作必將完成。" },
+            { text: "By midnight, the heavy rain will have stopped in the business district.", tense: tenses.FUTURE_PERFECT, keyword: "By midnight", translation: "到午夜時，商業區的暴雨將會停止。", detail: "指到午夜之時，下雨的狀態將會結束。" },
+            { text: "The contractor will have synchronized the simulation with the schedule by tomorrow morning.", tense: tenses.FUTURE_PERFECT, keyword: "by tomorrow morning", translation: "承建商將在明天早上之前將模擬與進度表完全同步。", detail: "明天早上是最終期限，同步化的程式動作會在明天前執行完畢。" },
+            { text: "By the end of the year, he will have played thirty rounds of tournament sports.", tense: tenses.FUTURE_PERFECT, keyword: "By the end of the year", translation: "到今年年底，他將已經打了三十場錦標賽運動。", detail: "到了年底結算時，他個人的打球場數經歷將累積到30場。" },
+            { text: "She will have completed her professional certificate for the management role by next year.", tense: tenses.FUTURE_PERFECT, keyword: "by next year", translation: "到明年，她將完成管理職位的專業證書課程。", detail: "明年是收尾點，屆時學業修讀與證書到手均會落幕完成。" },
+            { text: "By tomorrow morning, the script will have extracted all data from the source files.", tense: tenses.FUTURE_PERFECT, keyword: "By tomorrow morning", translation: "到明天早上，該腳本將已經從源檔案中提取出所有數據。", detail: "明天早上睡醒時，腳本的跑數與自動化提取工作已經全部跑完了。" },
+            { text: "I will have renewed my gym contract before it expires next month.", tense: tenses.FUTURE_PERFECT, keyword: "before it expires next month", translation: "在下個月到期之前，我將會續簽我的健身房合約。", detail: "在合約過期這件事發生前，續約的主動動作將會提前塵埃落定。" },
+            { text: "By the time we return from vacation, I will have edited all the landscape photography files.", tense: tenses.FUTURE_PERFECT, keyword: "By the time we return", translation: "到我們度假回來時，我將已經剪輯好所有的風景攝影檔案。", detail: "等我們旅行回來那一刻，修圖剪片的事情早就在旅途中或此前完結。" },
+            { text: "The authorities will have upgraded the digital infrastructure by the year 2030.", tense: tenses.FUTURE_PERFECT, keyword: "by the year 2030", translation: "當局將在2030年之前完成數位基礎設施的升級。", detail: "2030是宏觀時間目標，基礎設施的全面升級將在該年之前實現。" },
+            { text: "By next week, I will have consumed the entire package of nutrition powder.", tense: tenses.FUTURE_PERFECT, keyword: "By next week", translation: "到下週，我將吃完這整包營養粉。", detail: "下週結算時，這包營養粉將會被吃得乾乾淨淨。" },
+            { text: "The manager will have approved the coordinated design before the construction phase begins.", tense: tenses.FUTURE_PERFECT, keyword: "before the construction phase begins", translation: "在施工階段開始之前，經理將會批准協調好的設計方案。", detail: "施工階段動工前，經理的核准簽字動作必然在先前就已生效完成。" },
+            { text: "By the time the new model comes out, I will have saved enough money for the high-end camera.", tense: tenses.FUTURE_PERFECT, keyword: "By the time the new model comes out", translation: "到新機型上市時，我將已經存夠了買高階相機的錢。", detail: "新相機推出的那一刻，我的儲蓄進度目標就已經達成了。" },
+            { text: "By the time he finishes the training program, his performance rate will have stabilized completely.", tense: tenses.FUTURE_PERFECT, keyword: "by the time he finishes", translation: "當他完成訓練計劃時，他的表現率將已經完全穩定下來。", detail: "結業之時，表現的穩定度將早已形成並定型。" },
+            { text: "We will have owned this commercial vehicle for exactly two years by this summer.", tense: tenses.FUTURE_PERFECT, keyword: "by this summer", translation: "到今年夏天，我們擁有這輛商用汽車就剛好滿兩年了。", detail: "到了今年夏天，我們持有這部汽車的累計時間長度將正式跨過兩年整。" },
+
+            // Future Continuous
+            { text: "I will be coordinating the new 3D structural models at this time tomorrow.", tense: tenses.FUTURE_CONTINUOUS, keyword: "this time tomorrow", translation: "明天這個時候，我將會正在協調新的3D結構模型。", detail: "will be + V-ing 結構，表示在未來的特定時間點，某動作預期「正處於進行狀態」。" },
+            { text: "The coordinator will be packing the camera gear while I am picking up the vehicle.", tense: tenses.FUTURE_CONTINUOUS, keyword: "while", translation: "當我正在去提車的時候，協調員將會正在打包相機裝備。", detail: "表示在未來的某一時間段中，兩個動作將平行且持續地在進行中。" },
+            { text: "The project team will be conducting clash detection throughout the day next Tuesday.", tense: tenses.FUTURE_CONTINUOUS, keyword: "throughout the day next Tuesday", translation: "下週二整天，項目團隊都將會正在進行碰撞檢測。", detail: "強調下週二一整天這個未來的時間跨度中，工作一直持續不斷進行的狀態。" },
+            { text: "I will be taking the language mock exam at 10 AM this Saturday.", tense: tenses.FUTURE_CONTINUOUS, keyword: "at 10 AM this Saturday", translation: "本週六早上10點，我將會正在參加語言模擬考試。", detail: "指在未來週六10點整的那一瞬間，考試這個動作正處於核心進行中。" },
+            { text: "He will be tracking his statistical performance rate during his training session tomorrow morning.", tense: tenses.FUTURE_CONTINUOUS, keyword: "tomorrow morning", translation: "明天早上訓練期間，他將會正在追踪他的統計表現率。", detail: "說明在明早的特定時段中，數據追踪動作將正處於發生狀態。" },
+            { text: "The engineering division will be reviewing the master plan at noon tomorrow.", tense: tenses.FUTURE_CONTINUOUS, keyword: "at noon tomorrow", translation: "明天中午，工程部門將會正在審查主體規劃。", detail: "未來特定時間點正處於審查工作的進程中。" },
+            { text: "I will be gym training with a personal coach at this exact time next week.", tense: tenses.FUTURE_CONTINUOUS, keyword: "this exact time next week", translation: "下週的同一個時間，我將會正在跟私人教練一起進行健身訓練。", detail: "描述未來一週後的同一個刻度，某個健身動作正處於進行中。" },
+            { text: "They will be testing the image editing tool throughout the upcoming weekend.", tense: tenses.FUTURE_CONTINUOUS, keyword: "throughout the upcoming weekend", translation: "在即將到來的整個週末，他們都將會正在測試這款圖像編輯工具。", detail: "持續覆蓋整個週末長度的未來進行動作。" },
+            { text: "The staff will be running database queries while the system is updating tonight.", tense: tenses.FUTURE_CONTINUOUS, keyword: "while", translation: "今晚系統更新時，員工們將會正在執行資料庫查詢。", detail: "兩個未來的動作在同一段時間內共同推移與發生。" },
+            { text: "By this time tomorrow, we will be flying over the ocean for our vacation.", tense: tenses.FUTURE_CONTINUOUS, keyword: "By this time tomorrow", translation: "到明天這個時候，我們將會正飛行在海洋上空去度假。", detail: "明天此時，在飛機上飛行的狀態正處於持續進行中。" },
+            { text: "The architect will be presenting the digital twin concept at the symposium on Friday morning.", tense: tenses.FUTURE_CONTINUOUS, keyword: "on Friday morning", translation: "週五早上，建築師將會正在研討會上展示數位雙生概念。", detail: "明確的未來時間段中，簡報動作正處於進行狀態。" },
+            { text: "I will be drinking my nutritional beverage during the sports break tomorrow afternoon.", tense: tenses.FUTURE_CONTINUOUS, keyword: "tomorrow afternoon", translation: "明天下午運動休息期間，我將會正在喝我的營養飲料。", detail: "未來休息時段中，喝飲料這個長動作正處於推移中。" },
+            { text: "The specialist will be extracting system logs when the inspection team arrives tomorrow.", tense: tenses.FUTURE_CONTINUOUS, keyword: "when the inspection team arrives tomorrow", translation: "當檢查小組明天到達時，專家將會正在提取系統日誌。", detail: "當明天小組到達的一瞬間，專家提取日誌的長動作正處於進行的一半。" },
+            { text: "We will be driving our newly repaired vehicle throughout the entire afternoon this Sunday.", tense: tenses.FUTURE_CONTINUOUS, keyword: "throughout the entire afternoon", translation: "本週日整個下午，我們都將會正開著我們新修好的汽車兜風。", detail: "週日下午整個時間區塊內，開車動作正處於持續狀態。" },
+            { text: "She will be drafting the university admissions essay at midnight tonight.", tense: tenses.FUTURE_CONTINUOUS, keyword: "at midnight tonight", translation: "今晚午夜，她將會正在撰寫大學入學論文的草稿。", detail: "今夜24點整，坐在電腦前寫論文的動作預期正處於動態執行中。" },
+            { text: "The database administrator will be migrating files at 4 AM on Sunday morning.", tense: tenses.FUTURE_CONTINUOUS, keyword: "at 4 AM on Sunday morning", translation: "週日凌晨4點，資料庫管理員將會正在遷移檔案。", detail: "未來的凌晨四點整，系統遷移工作正處於密集的執行狀態中。" },
+            { text: "I will be detailing the internal components of the equipment tomorrow evening.", tense: tenses.FUTURE_CONTINUOUS, keyword: "tomorrow evening", translation: "明天晚上，我將會正在仔細清理和保養設備的內部組件。", detail: "明天晚上的時區內，保養清潔工作正處於持續實施中。" },
+            { text: "They will be practicing on the advanced driving simulator all day next Saturday.", tense: tenses.FUTURE_CONTINUOUS, keyword: "all day next Saturday", translation: "下週六整天，他們都將會正在高級駕駛模擬器上進行練習。", detail: "下週六整天這個未來區間內，練習動作將一直保持進行。" },
+            { text: "The contractor will be optimizing the schedule alignment when the director checks the room.", tense: tenses.FUTURE_CONTINUOUS, keyword: "when the director checks", translation: "當主管檢查房間時，承建商將會正在優化進度表對齊。", detail: "主管未來進來的一刻，優化工作正處於進行的一半。" },
+            { text: "My peer will be editing the raw photography pictures while I am attending the conference.", tense: tenses.FUTURE_CONTINUOUS, keyword: "while", translation: "當我正在參加會議時，我的同行將會正在編輯攝影原圖。", detail: "兩個未來的動作各自在同一個長度區間內平行開展。" },
+
+            // Past Perfect Continuous
+            { text: "I had been coordinating the structural 3D models for two hours before the server crashed.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the server crashed", translation: "在伺服器當機之前，我已經連續協調結構3D模型兩個小時了。", detail: "強調在過去某動作 (server crashed) 發生之前，前一個動作「一直不間斷地持續了多久」。" },
+            { text: "The team assistant had been setting up the drone apparatus for an hour before the rain started.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the rain started", translation: "在下雨之前，團隊助理已經連續調試航拍機設備一個小時了。", detail: "下雨是過去式，調試航拍機是在下雨前持續開展的一段不間斷長過程。" },
+            { text: "The contractor had been adjusting the construction simulation for hours before the board approved it.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the board approved it", translation: "在董事會批准之前，承建商已經連續調整這施工模擬好幾個小時了。", detail: "批准是 past event，前面的調整工程是長達數小時且毫無間斷的動態過程。" },
+            { text: "I had been training regularly at the fitness center for months before I noticed a change in my health.", tense: tenses.PAST_PERFECT_CONT, keyword: "for months before", translation: "在我注意到健康有改變之前，我已經在健身中心規律健身好幾個月了。", detail: "強調在過去某個發現的節點前，好幾個月以來不間斷保持的健身動態。" },
+            { text: "I had been preparing my academic portfolio for the prestigious university for months before submitting the application.", tense: tenses.PAST_PERFECT_CONT, keyword: "before submitting the application", translation: "在提交正式申請之前，我已經連續好幾個月在準備給知名大學的學術作品集了。", detail: "強調提交前那段長達數月、不間斷付出心思的連續準備過程。" },
+            { text: "The programmer had been extracting system logs for an hour before the terminal froze.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the terminal froze", translation: "在終端機凍結之前，程式員已經連續提取系統日誌一個小時了。", detail: "終端機凍結是過去起點，在此之前提取日誌的動作已經持續不間斷運作了一小時。" },
+            { text: "They had been debating the infrastructure budget for three straight hours before reaching a consensus.", tense: tenses.PAST_PERFECT_CONT, keyword: "before reaching a consensus", translation: "在達成共識之前，他們已經連續辯論基礎設施預算整整三個小時了。", detail: "達成共識是過去單點，在此之前經歷了三小時連續不斷的辯論勞動。" },
+            { text: "The driver had been detailing the car interior all morning before he took it out for display.", tense: tenses.PAST_PERFECT_CONT, keyword: "all morning before", translation: "在把車子開出去展示之前，司機整個上午都在連續清理汽車內飾。", detail: "出車展示是過去式，在此之前整個上午都在不間斷進行汽車美容。" },
+            { text: "She had been reviewing the English grammar list since dawn before the testing center opened.", tense: tenses.PAST_PERFECT_CONT, keyword: "since dawn before", translation: "在測試中心開門之前，她自黎明起就一直在連續複習英文文法表。", detail: "中心開門是過去單點，前面的文法複習是不間斷從黎明延續到開門前的長過程。" },
+            { text: "The supervisor had been checking the error database for hours before finding the root clash.", tense: tenses.PAST_PERFECT_CONT, keyword: "before finding the root clash", translation: "在找到根本碰撞衝突之前，主管已經連續檢查錯誤資料庫好幾個小時了。", detail: "找到問題是過去點，前面經歷了數小時不中斷的排查苦工。" },
+            { text: "We had been driving the SUV through the mountains for miles before we found a safe location.", tense: tenses.PAST_PERFECT_CONT, keyword: "before we found a safe location", translation: "在我們找到安全的地點之前，我們已經開著SUV在山裡連續行駛了好幾英里。", detail: "找到地點是過去式，前面的行駛是一直保持在前進狀態中的動作。" },
+            { text: "The runner had been consuming nutrition supplements for a year before entering the marathon.", tense: tenses.PAST_PERFECT_CONT, keyword: "before entering the marathon", translation: "在參加馬拉松之前，這名跑手已經連續吃了一年的營養補充品。", detail: "入賽是過去式，前面是一整年不中斷的健康飲食累積習慣。" },
+            { text: "The meeting participants had been arguing about the digital twin model for an hour before the manager stepped in.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the manager stepped in", translation: "在經理介入之前，與會者已經就數位雙生模型連續爭論了一個小時了。", detail: "經理介入是過去式短動作，前面爭吵是一個小時不間斷的進行過程。" },
+            { text: "He had been watching professional golf tournaments on the website for hours before his computer restarted.", tense: tenses.PAST_PERFECT_CONT, keyword: "before his computer restarted", translation: "在電腦重新啟動之前，他已經在網站上連續觀看專業哥爾夫球賽好幾個小時了。", detail: "重啟是單點過去式，看比賽是重啟前連續耗費數小時的動作。" },
+            { text: "The photographer had been editing the raw landscape photos since last night before the client changed the requirements.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the client changed", translation: "在客戶更改要求之前，攝影師自昨晚以來就一直在不間斷地編輯風景相片原圖。", detail: "客戶改要求是過去點，前面的修圖動作是不中斷的長期付出。" },
+            { text: "The engineering team had been synchronizing data for days before the network connection dropped.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the network connection dropped", translation: "在網路連線中斷之前，工程團隊已經連續同步數據好幾天了。", detail: "斷網是過去單點，數據同步是斷網前持續數天沒停過的工程。" },
+            { text: "I had been working out at the local center for an hour before my trainer arrived.", tense: tenses.PAST_PERFECT_CONT, keyword: "before my trainer arrived", translation: "在我的教練到達之前，我已經在本地中心連續健身一個小時了。", detail: "教練抵達是過去式，前面是我自己一個人不間斷健身一小時的動態過程。" },
+            { text: "The research lab had been auditing the files for weeks before they detected the discrepancy.", tense: tenses.PAST_PERFECT_CONT, keyword: "before they detected", translation: "在他們發現差異之前，研究實驗室已經連續審計文件好幾個星期了。", detail: "發現差異是過去式，前面是數週不中斷的漫長審計進程。" },
+            { text: "The client had been sending email modifications all day before we finalized the 3D asset.", tense: tenses.PAST_PERFECT_CONT, keyword: "before we finalized", translation: "在我們定稿3D資產之前，客戶整天都在連續發送電郵修改意見。", detail: "定稿是過去單點，客戶發信是整天密集的連續騷擾或反饋動作。" },
+            { text: "He had been practicing his tennis serve for an hour before the heavy storm hit the field.", tense: tenses.PAST_PERFECT_CONT, keyword: "before the heavy storm hit", translation: "在大暴風雨襲擊球場之前，他已經連續練習網球發球一個小時了。", detail: "暴風雨來襲是過去式，前面是一小時不停歇的體能揮拍練習。" },
+
+            // Future Perfect Continuous
+            { text: "By next month, I will have been coordinating 3D structural models at this institution for exactly two years.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By next month", translation: "到下個月，我在這家機構不間斷地協調3D結構模型就滿兩年了。", detail: "will have been + V-ing 結構。By + 未來時間點搭配時間長度，結算到了未來某時刻，該動作累計不間斷進行了多久。" },
+            { text: "By midnight, the design expert will have been editing these digital photography shots for five consecutive hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By midnight", translation: "到今晚午夜，設計專家連續編輯這些數位照片就要滿五個小時了。", detail: "預測到今天午夜截止線時，修圖這項不間斷動作的累計總時長。" },
+            { text: "By the time the tournament begins, he will have been practicing on the sports simulator for six months straight.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By the time the tournament begins", translation: "到錦標賽開始時，他連續在體育模擬器上練習就整整滿六個月了。", detail: "By the time 帶出未來時間點，主句用來結算屆時已經連續不間斷練習了半年的長度。" },
+            { text: "By the time my coordinator gets home, I will have been detailing this commercial vehicle for four hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time my coordinator gets home", translation: "當我的協調員回到家時，我連續清洗保養這部商用汽車就要滿四個小時了。", detail: "計算在協調員到家（未來點）的那一刻，我持續不斷洗車保養的勞動時間長度。" },
+            { text: "By the time the academic semester starts, I will have been researching the Master of Engineering program for a long time.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the semester starts", translation: "到學期開始時，我對這個工程碩士課程的研究就已經持續很長一段時間了。", detail: "表示在未來學期開始那一刻，我對課程規劃持續投入研究的累計持續時長。" },
+            { text: "By next Friday, the programming script will have been extracting database logs for seventy-two hours non-stop.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By next Friday", translation: "到下週五，該程式腳本將已經連續不停地提取資料庫日誌達七十二個小時了。", detail: "結算未來下週五時，自動化腳本不中斷跑數的累計總時數。" },
+            { text: "By tomorrow morning, the rain will have been falling on the city infrastructure for twenty-four hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By tomorrow morning", translation: "到明天早上，降雨落在城市基礎設施上就要持續滿二十四小時了。", detail: "預測未來明天早晨時，降雨這一自然狀態持續不斷發生的累計時長。" },
+            { text: "By the time the office opens, the database system will have been migrating master data for ten hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the office opens", translation: "到辦公室開門時，資料庫系統遷移主數據就要連續進行滿十個小時了。", detail: "辦公室開門是未來點，主句用來結算系統到時候已經不間斷運作了多久。" },
+            { text: "By the end of this year, she will have been working as a BIM lead for five consecutive years.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By the end of this year", translation: "到今年年底，她擔任BIM主管職位就要整整滿五個連續年份了。", detail: "年底是未來節點，用來結算職涯不間斷狀態的總長度。" },
+            { text: "By next week, I will have been attending the gym training program regularly for six months.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By next week", translation: "到下週，我定期參加健身訓練計劃就要連續滿六個月了。", detail: "下週結算時，這項健康習慣保持的不間斷跨度將達半年。" },
+            { text: "By 6 PM, the technical support team will have been resolving server errors for twelve straight hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By 6 PM", translation: "到下午6點，技術支援團隊連續解決伺服器錯誤就要整整滿十二個小時了。", detail: "傍晚六點是截止點，計算團隊連續不間斷排障的辛勞時間長度。" },
+            { text: "By the time we finish our vacation, we will have been driving this rental vehicle for two weeks straight.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By the time we finish", translation: "到我們度假結束時，我們連續駕駛這輛租賃汽車就要整整滿兩週了。", detail: "度假結束是未來點，主句說明屆時不間斷開車壯遊的累計長度。" },
+            { text: "By tomorrow noon, the photographer will have been editing the digital twin graphics for twenty hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By tomorrow noon", translation: "到明天中午，攝影師連續編輯數位雙生圖像就要滿二十個小時了。", detail: "明天中午是結算點，說明連續修圖的高強度工作時長。" },
+            { text: "By the time the review session ends, the panel will have been debating the infrastructure design for four hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the review session ends", translation: "到評審會議結束時，評審小組連續辯論基礎設施設計就要滿四個小時了。", detail: "會議結束是未來時間點，用來總結不間斷辯論的開會時間。" },
+            { text: "By next Monday, I will have been consuming this brand of organic protein powder for a whole year.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By next Monday", translation: "到下週一，我連續食用這個品牌的有機蛋白粉就要滿一整年了。", detail: "下週一用來結算不間斷保持某項特定飲食習慣的完整年度跨度。" },
+            { text: "By the time the presentation begins, the contractor will have been adjusting the schedule simulation for twelve hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the presentation begins", translation: "到簡報開始時，承建商連續調整進度模擬就要滿十二個小時了。", detail: "簡報開始是未來點，計算其前置作業連續不間斷投入的勞動時間。" },
+            { text: "By the time the new high-end camera arrives, the studio will have been saving capital for a year.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the new high-end camera arrives", translation: "到這款高階相機送達時，工作室連續累積資金就要滿一年了。", detail: "相機送達是未來起點，主句總結到時不間斷儲蓄籌集資金的累積長度。" },
+            { text: "By the end of the semester, he will have been studying international law online for eight months straight.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By the end of the semester", translation: "到學期末，他連續在線上修讀國際法就要整整滿八個月了。", detail: "學期末結算不中斷線上學習法律課程的月份總長度。" },
+            { text: "By this evening, my peer will have been filtering AutoCAD drawing layers for six consecutive hours.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "By this evening", translation: "到今天傍晚，我的同行連續篩選AutoCAD圖紙圖層就要滿六個小時了。", detail: "傍晚結算重複、連續篩選圖層這項工程製圖工作的總時長。" },
+            { text: "By the time the sports season closes, the athlete will have been tracking his performance rate daily for a year.", tense: tenses.FUTURE_PERFECT_CONT, keyword: "by the time the sports season closes", translation: "到運動賽季結束時，這名運動員每天連續追踪自己的表現率就要滿一年了。", detail: "賽季結束是未來考核點，用來結算每日不間斷追踪數據的完整跨度。" }
         ];
-        /* ======================================================= */
-        /* ⚠️ 覆蓋範圍結束 ⚠️                                        */
-        /* ======================================================= */
 
         const passBank = [
             { q: "The engineering team has updated all the 3D structural models.", opts: ["All the 3D structural models were updated by the engineering team.", "All the 3D structural models have been updated by the engineering team.", "All the 3D structural models had been updated by the engineering team."], ans: 1, d: "主動句是「現在完成式」。被動時必須保持相同時態，加上 been：have/has been + P.P.。" },
@@ -289,9 +461,6 @@
             { q: "People expect that the new policy will improve market stability.", opts: ["The new policy is expected to improve market stability.", "That the new policy will improve expects by people.", "The new policy expected to improve market stability."], ans: 0, d: "這是一種進階的「主詞提升」被動寫法 (S + is expected to...)，在學術與新聞報導中極度常見。" }
         ];
 
-        // ---------------------------------------------------------
-        // 2. TIMELINE GRAPHIC ENGINE
-        // ---------------------------------------------------------
         function drawTimeline(containerId, tenseKey) {
             const box = document.getElementById(containerId);
             const oldSpan = box.querySelector('.timeline-action-span');
@@ -312,9 +481,6 @@
             if(pointStyle) box.insertAdjacentHTML('beforeend', `<div class="timeline-action-point" style="${pointStyle}"></div>`);
         }
 
-        // ---------------------------------------------------------
-        // 3. GAME LOGIC
-        // ---------------------------------------------------------
         let fcIdx = 0;
         let tState = { q: [], i: 0, s: 0, a: false };
         let pState = { q: [], i: 0, s: 0, a: false };
@@ -322,7 +488,6 @@
         function switchGame(tabId, btnElement) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
-            
             if (btnElement) btnElement.classList.add('active');
             document.getElementById(tabId).classList.add('active');
             
@@ -331,7 +496,6 @@
             if(tabId === 'tab-pass' && pState.q.length === 0) initPass();
         }
 
-        // --- Flashcards ---
         function updateFC() {
             const d = flashcardData[fcIdx]; document.getElementById('flashcard').classList.remove('flipped');
             setTimeout(() => {
@@ -345,10 +509,11 @@
         function nextFC() { fcIdx = (fcIdx + 1) % 8; updateFC(); }
         function prevFC() { fcIdx = (fcIdx - 1 + 8) % 8; updateFC(); }
 
-        // --- Tense Quiz ---
         function initTense() {
-            const roundQuestions = Math.min(10, tenseBank.length); 
-            tState.q = [...tenseBank].sort(()=>0.5-Math.random()).slice(0, roundQuestions); 
+            const roundQuestions = Math.min(20, sentenceBank.length); 
+            tState.q = [...sentenceBank].map(item => ({
+                q: item.text, t: item.tense, k: item.keyword, tr: item.translation, d: item.detail
+            })).sort(()=>0.5-Math.random()).slice(0, roundQuestions); 
             tState.i = 0; tState.s = 0;
             document.getElementById('tense-result').style.display = 'none'; document.getElementById('tense-quiz-area').style.display = 'block';
             showTense();
@@ -386,7 +551,6 @@
             else { document.getElementById('tense-quiz-area').style.display='none'; document.getElementById('tense-result').style.display='block'; document.getElementById('tense-final-score').innerText= `${tState.s} / ${tState.q.length * 10}`; document.getElementById('tense-prog-bar').style.width='100%'; }
         }
 
-        // --- Passive Voice Quiz ---
         function initPass() {
             pState.q = [...passBank].sort(()=>0.5-Math.random()).slice(0, 10); pState.i = 0; pState.s = 0;
             document.getElementById('pass-result').style.display = 'none'; document.getElementById('pass-quiz-area').style.display = 'block';
